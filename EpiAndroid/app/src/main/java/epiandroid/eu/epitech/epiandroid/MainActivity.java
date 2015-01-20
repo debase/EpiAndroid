@@ -1,5 +1,6 @@
 package epiandroid.eu.epitech.epiandroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
@@ -60,22 +63,22 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             Ion.with(this).load("http://epitech-api.herokuapp.com/login")
                     .setBodyParameter("login", loginField.getText().toString())
                     .setBodyParameter("password", passwordField.getText().toString())
-                    .asString()
-                    .setCallback(new FutureCallback<String>() {
+                    .asJsonObject()
+                    .setCallback(new FutureCallback<JsonObject>() {
                         @Override
-                        public void onCompleted(Exception e, String result) {
-                            JSONObject objectResult = null;
+                        public void onCompleted(Exception e, JsonObject result) {
+                            String token;
                             try {
-                                objectResult = new JSONObject(result);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
-                            }
-                            try {
-                                String token = objectResult.getString("token");
+                                token = result.get("token").getAsString();
                                 System.out.println("Token : " + token);
-                            } catch (JSONException e1) {
-                                e1.printStackTrace();
+                            } catch (Exception errorExp) {
+                                JsonObject error = result.get("error").getAsJsonObject();
+                                System.out.println("Error  " + error.toString());
+                                return ;
                             }
+                            Intent homeActivity = new Intent(getApplicationContext(), HomeActivity.class);
+                            homeActivity.putExtra("token", token);
+                            startActivity(homeActivity);
                         }
                     });
         }
