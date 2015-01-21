@@ -9,13 +9,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/loginField"
-        android:layout_marginBottom="50dp"
-        android:layout_above="@+id/passwordField"
+        android:inputType="textNoSuggestions"
+        android:hint="@string/connection_login"
+        android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/passwordField"
         android:layout_alignStart="@+id/passwordField"
+        android:layout_marginTop="50dp"
         android:layout_alignRight="@+id/passwordField"
-        android:layout_alignEnd="@+id/passwordField"
-        android:hint="@string/connection_login"/>
+        android:layout_alignEnd="@+id/passwordField" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -23,17 +24,48 @@
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/passwordField"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:hint="@string/connection_password"/>
+        android:hint="@string/connection_password"
+        android:layout_below="@+id/loginField"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/connection_button"
         android:id="@+id/loginButton"
-        android:layout_marginTop="71dp"
-        android:layout_alignTop="@+id/passwordField"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/passwordField"
+        android:layout_alignLeft="@+id/passwordField"
+        android:layout_alignStart="@+id/passwordField"
+        android:layout_alignRight="@+id/passwordField"
+        android:layout_alignEnd="@+id/passwordField" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/logging_layout_spinner"
+        android:visibility="gone"
+        android:layout_below="@+id/loginButton">
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textView"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/loging_you_in"
+            android:id="@+id/textView"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true">
+
+            </TextView>
+
+    </RelativeLayout>
 
 </RelativeLayout>

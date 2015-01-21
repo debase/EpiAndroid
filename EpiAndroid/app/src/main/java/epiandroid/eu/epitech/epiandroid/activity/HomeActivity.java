@@ -20,7 +20,7 @@ import epiandroid.eu.epitech.epiandroid.adapter.EpiAndroidNavigationAdapter;
 /**
  * Created by debas on 20/01/15.
  */
-public class EpiAndroidActivity extends ActionBarActivity {
+public class HomeActivity extends ActionBarActivity {
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -31,7 +31,9 @@ public class EpiAndroidActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.epiandroid_activity);
+        setContentView(R.layout.home_activity);
+
+
 
         initView();
         if (toolbar != null) {
@@ -39,6 +41,30 @@ public class EpiAndroidActivity extends ActionBarActivity {
             setSupportActionBar(toolbar);
         }
         initDrawer();
+
+//        Ion.with(this).load("http://epitech-api.herokuapp.com/infos")
+//                .setBodyParameter("token", this.getIntent().getStringExtra("token"))
+//                .asJsonObject()
+//                .setCallback(new FutureCallback<JsonObject>() {
+//                    @Override
+//                    public void onCompleted(Exception e, JsonObject result) {
+//                        String name;
+//                        String login;
+//                        String internalEmail;
+//                        try {
+//                            name = result.get("infos").getAsJsonObject().get("title").getAsString();
+//                            login = result.get("infos").getAsJsonObject().get("login").getAsString();
+//                            internalEmail = result.get("infos").getAsJsonObject().get("internal_email").getAsString();
+//                        } catch (Exception errorExp) {
+//                            JsonObject error = result.get("error").getAsJsonObject();
+//                            System.out.println("Error : " + error.toString());
+//                            return ;
+//                        }
+//                        nameLabel.setText(name, TextView.BufferType.NORMAL);
+//                        loginLabel.setText(login, TextView.BufferType.NORMAL);
+//                        emailLabel.setText(internalEmail, TextView.BufferType.NORMAL);
+//                    }
+//                });
 
     }
 
@@ -84,7 +110,7 @@ public class EpiAndroidActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

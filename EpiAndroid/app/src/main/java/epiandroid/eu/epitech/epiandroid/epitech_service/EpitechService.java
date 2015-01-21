@@ -21,6 +21,11 @@ public class EpitechService {
         BASE_URL = urlApi;
     }
 
+    public static void initialize(String urlApi, String token) {
+        BASE_URL = urlApi;
+        mToken = token;
+    }
+
     public static void authanticate(String login, String password, final EpitechServiceResponseHandler responseHandler) {
         final RequestParams requestParams = new RequestParams();
         requestParams.add("login", login);
@@ -47,6 +52,11 @@ public class EpitechService {
         if (mToken == null) {
             throw new EpitechServiceException("Your are not loged in [token invalid]");
         }
+        requestParams.add("token", mToken);
         mClient.post(BASE_URL + section, requestParams, responseHandler);
+    }
+
+    public static String getToken() {
+        return mToken;
     }
 }

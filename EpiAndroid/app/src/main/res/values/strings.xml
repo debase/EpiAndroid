@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">EpiAndroid</string>
     <string name="action_settings">Settings</string>
     <string name="connection_login">Login</string>
@@ -7,4 +8,8 @@
     <string name="connection_button">Login</string>
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="loging_you_in">Logging you in</string>
+
 </resources>

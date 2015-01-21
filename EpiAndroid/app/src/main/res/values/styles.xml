@@ -1,8 +1,40 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="NoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="ToolBarThemeHome" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!-- Use the Toolbar instead of the ActionBar
+             (new in API 21 and AppCompat). -->
+        <item name="windowActionBar">false</item>
+
+        <!-- colorPrimary is used, for instance, for the default ActionBar
+             (but not Toolbar) background.
+              We specify the same color for the toolbar background in
+              toolbar.xml.. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+
+        <!-- colorPrimaryDark is used for the status bar (with the
+             battery, clock, etc). -->
+        <item name="colorPrimaryDark">@color/primaryColorDark</item>
+
+        <!-- colorAccent is used as the default value for
+             colorControlActivated which is used to tint widgets. -->
+        <!--<item name="colorAccent">@color/color_accent</item>-->
+    </style>
+
+    <style name="AppThemeLogin" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/LoginActionBar</item>
+        <item name="actionBarStyle">@style/LoginActionBar</item>
+    </style>
+
+    <!-- Base application theme.
+         Defining this lets values-v21/styles.xml reuse it with changes. -->
+
+    <style name="LoginActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/primaryColor</item>
+        <item name="background">@color/primaryColor</item>
+    </style>
 </resources>
