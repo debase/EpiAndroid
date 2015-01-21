@@ -1,5 +1,7 @@
 package epiandroid.eu.epitech.epiandroid.activity;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +16,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import epiandroid.eu.epitech.epiandroid.Fragment.MarksFragment;
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.adapter.EpiAndroidNavigationAdapter;
 
@@ -33,8 +36,6 @@ public class HomeActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
 
-
-
         initView();
         if (toolbar != null) {
             toolbar.setTitle("Navigation Drawer");
@@ -42,40 +43,24 @@ public class HomeActivity extends ActionBarActivity {
         }
         initDrawer();
 
-//        Ion.with(this).load("http://epitech-api.herokuapp.com/infos")
-//                .setBodyParameter("token", this.getIntent().getStringExtra("token"))
-//                .asJsonObject()
-//                .setCallback(new FutureCallback<JsonObject>() {
-//                    @Override
-//                    public void onCompleted(Exception e, JsonObject result) {
-//                        String name;
-//                        String login;
-//                        String internalEmail;
-//                        try {
-//                            name = result.get("infos").getAsJsonObject().get("title").getAsString();
-//                            login = result.get("infos").getAsJsonObject().get("login").getAsString();
-//                            internalEmail = result.get("infos").getAsJsonObject().get("internal_email").getAsString();
-//                        } catch (Exception errorExp) {
-//                            JsonObject error = result.get("error").getAsJsonObject();
-//                            System.out.println("Error : " + error.toString());
-//                            return ;
-//                        }
-//                        nameLabel.setText(name, TextView.BufferType.NORMAL);
-//                        loginLabel.setText(login, TextView.BufferType.NORMAL);
-//                        emailLabel.setText(internalEmail, TextView.BufferType.NORMAL);
-//                    }
-//                });
-
     }
 
     private void initView() {
-            leftDrawerList = (ListView) findViewById(R.id.left_drawer);
-            toolbar = (Toolbar) findViewById(R.id.toolbar);
-            drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        leftDrawerList = (ListView) findViewById(R.id.left_drawer);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
 
-            navigationDrawerAdapter = new EpiAndroidNavigationAdapter(new ArrayList<View>());
-            leftDrawerList.setAdapter(navigationDrawerAdapter);
+        navigationDrawerAdapter = new EpiAndroidNavigationAdapter(new ArrayList<View>());
+        leftDrawerList.setAdapter(navigationDrawerAdapter);
+
+        //Fragment provisoire
+        Fragment marksFragment = new MarksFragment();
+
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, marksFragment).commit();
+
+
     }
 
     private void initDrawer() {

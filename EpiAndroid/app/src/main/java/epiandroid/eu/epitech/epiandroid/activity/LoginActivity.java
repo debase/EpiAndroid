@@ -25,6 +25,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     private Button loginButton;
     private boolean isUserLogedIn = false;
     private RelativeLayout loginSpinnerLayout = null;
+
     private EpitechServiceResponseHandler epitechServiceResponseHandler = new EpitechServiceResponseHandler() {
         @Override
         public void onSuccess(int statusCode, JSONObject jsonObject) {
@@ -39,7 +40,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         @Override
         public void onFailure(int statusCode, JSONObject jsonObject) {
             Toast.makeText(LoginActivity.this, "Authantification failed with error code " + statusCode, Toast.LENGTH_LONG).show();
-            onFinisheAuthanticate(false);
+            onFinisheAuthanticate(true);
         }
      };
 
