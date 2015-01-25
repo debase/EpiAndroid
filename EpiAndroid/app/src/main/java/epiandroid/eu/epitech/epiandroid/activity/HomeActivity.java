@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -21,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import epiandroid.eu.epitech.epiandroid.CircleTransform;
 import epiandroid.eu.epitech.epiandroid.Fragment.MarksFragment;
@@ -28,6 +30,7 @@ import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.adapter.EpiAndroidNavigationAdapter;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechServiceResponseHandler;
+import navigation_drawer.NavigationDrawerItem;
 
 /**
  * Created by debas on 20/01/15.
@@ -37,10 +40,11 @@ public class HomeActivity extends ActionBarActivity {
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-//    private ListView leftDrawerList;
+    private ListView leftDrawerList;
     private ImageView mPictureView;
     private TextView mLogin, mMail;
     private BaseAdapter navigationDrawerAdapter;
+    private List<NavigationDrawerItem> mNavigationArray = new ArrayList<>();
 
     private EpitechServiceResponseHandler mEpitechServiceResponseHandler = new EpitechServiceResponseHandler() {
         @Override
@@ -81,13 +85,15 @@ public class HomeActivity extends ActionBarActivity {
     }
 
     private void initView() {
-//        leftDrawerList = (ListView) findViewById(R.id.left_drawer);
+        leftDrawerList = (ListView) findViewById(R.id.navdrawer_listview);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
 
-        navigationDrawerAdapter = new EpiAndroidNavigationAdapter(new ArrayList<View>());
-//        leftDrawerList.setAdapter(navigationDrawerAdapter);
+        mNavigationArray.add(new NavigationDrawerItem(R.drawable.marks, getResources().getString(R.string.marks)));
+        navigationDrawerAdapter = new EpiAndroidNavigationAdapter(this, mNavigationArray);
+        leftDrawerList.setAdapter(navigationDrawerAdapter);
+
         mPictureView = (ImageView) findViewById(R.id.profile_image);
         mLogin = (TextView) findViewById(R.id.login_textview);
         mMail = (TextView) findViewById(R.id.mail_textview);
