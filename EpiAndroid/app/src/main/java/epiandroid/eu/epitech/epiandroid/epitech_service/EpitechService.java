@@ -45,9 +45,17 @@ public class EpitechService {
         });
     }
 
-    public static void postRequest(String section, RequestParams requestParams, EpitechServiceResponseHandler responseHandler) throws EpitechServiceException {
+    public static void postRequest(String section, RequestParams requestParams, EpitechServiceResponseHandler responseHandler) {
         if (mToken == null) {
-            throw new EpitechServiceException("Your are not loged in [token invalid]");
+            try {
+                throw new EpitechServiceException("Your are not loged in [token invalid]");
+            } catch (EpitechServiceException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        if (requestParams == null) {
+            requestParams = new RequestParams();
         }
         requestParams.add("token", mToken);
         mClient.post(BASE_URL + section, requestParams, responseHandler);

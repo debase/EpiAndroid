@@ -12,13 +12,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import epiandroid.eu.epitech.epiandroid.CircleTransform;
 import epiandroid.eu.epitech.epiandroid.Fragment.MarksFragment;
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.adapter.EpiAndroidNavigationAdapter;
+import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
+import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechServiceResponseHandler;
 
 /**
  * Created by debas on 20/01/15.
@@ -28,8 +37,34 @@ public class HomeActivity extends ActionBarActivity {
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-    private ListView leftDrawerList;
+//    private ListView leftDrawerList;
+    private ImageView mPictureView;
+    private TextView mLogin, mMail;
     private BaseAdapter navigationDrawerAdapter;
+
+    private EpitechServiceResponseHandler mEpitechServiceResponseHandler = new EpitechServiceResponseHandler() {
+        @Override
+        public void onSuccess(int statusCode, JSONObject jsonObject) {
+            try {
+                JSONObject infos = jsonObject.getJSONObject("infos");
+                String urlProfilPicture = "https://cdn.local.epitech.eu/userprofil/" + infos.getString("picture");
+                mLogin.setText(infos.getString("title"));
+                mMail.setText(infos.getString("internal_email"));
+                Picasso.with(HomeActivity.this)
+                        .load(urlProfilPicture)
+                        .transform(new CircleTransform())
+                        .error(R.drawable.person_image_empty)
+                        .into(mPictureView);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailure(int statusCode, JSONObject jsonObject) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +81,18 @@ public class HomeActivity extends ActionBarActivity {
     }
 
     private void initView() {
-        leftDrawerList = (ListView) findViewById(R.id.left_drawer);
+//        leftDrawerList = (ListView) findViewById(R.id.left_drawer);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
 
         navigationDrawerAdapter = new EpiAndroidNavigationAdapter(new ArrayList<View>());
-        leftDrawerList.setAdapter(navigationDrawerAdapter);
+//        leftDrawerList.setAdapter(navigationDrawerAdapter);
+        mPictureView = (ImageView) findViewById(R.id.profile_image);
+        mLogin = (TextView) findViewById(R.id.login_textview);
+        mMail = (TextView) findViewById(R.id.mail_textview);
+
+        EpitechService.postRequest("infos", null, mEpitechServiceResponseHandler);
 
         //Fragment provisoire
         Fragment marksFragment = new MarksFragment();

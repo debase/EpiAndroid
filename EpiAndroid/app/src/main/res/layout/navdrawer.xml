@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/navdrawer_width"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:fitsSystemWindows="true"
+    android:background="@color/navdrawer_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/keyline_1">
+
+                <ImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="@dimen/navdrawer_profile_image_size"
+                    android:layout_height="@dimen/navdrawer_profile_image_size"
+                    android:src="@drawable/person_image_empty"
+                    android:scaleType="centerCrop"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_toEndOf="@+id/profile_image"
+                        android:paddingLeft="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:singleLine="true"
+                            android:text="@string/navdrawer_login"
+                            android:id="@+id/login_textview"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="@string/navdrawer_email"
+                            android:id="@+id/mail_textview"/>
+
+                    </LinearLayout>
+
+            </RelativeLayout>
+        </FrameLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/navdrawer_listview">
+
+        </ListView>
+
+    </LinearLayout>
+</RelativeLayout>

@@ -12,5 +12,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="loging_you_in">Logging you in</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="navdrawer_login">login</string>
+    <string name="navdrawer_email">email</string>
 </resources>
