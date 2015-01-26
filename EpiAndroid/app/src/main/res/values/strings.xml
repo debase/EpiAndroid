@@ -16,5 +16,12 @@
     <!--navdrawer strings-->
     <string name="navdrawer_login">login</string>
     <string name="navdrawer_email">email</string>
+    <string name="home">Acceuil</string>
     <string name="marks">Note</string>
+    <string name="calendar">Planning</string>
+    <string name="logout">Déconnexion</string>
+    <string name="really_logout">Voulez vous vraiment vous déconnecter ?</string>
+
+    <string name="yes">oui</string>
+    <string name="no">non</string>
 </resources>

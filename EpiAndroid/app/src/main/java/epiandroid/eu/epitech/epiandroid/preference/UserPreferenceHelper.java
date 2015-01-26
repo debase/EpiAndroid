@@ -17,12 +17,6 @@ public class UserPreferenceHelper {
         return sharedPreferences.getBoolean(USER_LOGEDIN, false);
     }
 
-    public static void setUserLogedIn(Context context, boolean logedIn) {
-        SharedPreferences.Editor editor = context.getSharedPreferences(USER_PREFS, 0).edit();
-        editor.putBoolean(USER_LOGEDIN, logedIn);
-        editor.commit();
-    }
-
     public static String getLogin(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(USER_PREFS, 0);
         return sharedPreferences.getString(USER_LOGIN, null);
@@ -37,6 +31,7 @@ public class UserPreferenceHelper {
         SharedPreferences.Editor editor = context.getSharedPreferences(USER_PREFS, 0).edit();
         editor.putString(USER_LOGIN, login);
         editor.putString(USER_PASSWD, pwd);
+        editor.putBoolean(USER_LOGEDIN, true);
         editor.commit();
     }
 
@@ -44,6 +39,7 @@ public class UserPreferenceHelper {
         SharedPreferences.Editor editor = context.getSharedPreferences(USER_PREFS, 0).edit();
         editor.remove(USER_LOGIN);
         editor.remove(USER_PASSWD);
+        editor.remove(USER_LOGEDIN);
         editor.commit();
     }
 }

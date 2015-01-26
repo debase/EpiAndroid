@@ -1,16 +1,20 @@
 package epiandroid.eu.epitech.epiandroid.activity;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -30,21 +34,24 @@ import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.adapter.EpiAndroidNavigationAdapter;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechServicePostResponseHandler;
-import navigation_drawer.NavigationDrawerItem;
+import epiandroid.eu.epitech.epiandroid.preference.UserPreferenceHelper;
+import epiandroid.eu.epitech.epiandroid.utils.Utils;
 
 /**
  * Created by debas on 20/01/15.
  */
-public class HomeActivity extends ActionBarActivity {
+public class HomeActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-    private ListView leftDrawerList;
+    private ListView listDrawer;
     private ImageView mPictureView;
     private TextView mLogin, mMail;
     private BaseAdapter navigationDrawerAdapter;
-    private List<NavigationDrawerItem> mNavigationArray = new ArrayList<>();
+    private List<View> mNavigationArray = new ArrayList<>();
+    private View currentSectionSelected = null;
+    private int textSectionColor = 0;
 
     private EpitechServicePostResponseHandler mEpitechServicePostResponseHandler = new EpitechServicePostResponseHandler() {
         @Override
@@ -84,29 +91,38 @@ public class HomeActivity extends ActionBarActivity {
 
     }
 
+    public View builSectionView(int iconRes, int stringRes) {
+        View view = LayoutInflater.from(this).inflate(R.layout.navdrawer_section, listDrawer, false);
+        ImageView image = (ImageView) view.findViewById(R.id.icon_section);
+        TextView text = (TextView) view.findViewById(R.id.text_section);
+        image.setImageResource(iconRes);
+        text.setText(stringRes);
+
+        return view;
+    }
+
     private void initView() {
-        leftDrawerList = (ListView) findViewById(R.id.navdrawer_listview);
+        listDrawer = (ListView) findViewById(R.id.navdrawer_listview);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
+        EpitechService.postRequest("infos", null, mEpitechServicePostResponseHandler);
 
-        mNavigationArray.add(new NavigationDrawerItem(R.drawable.marks, getResources().getString(R.string.marks)));
-        navigationDrawerAdapter = new EpiAndroidNavigationAdapter(this, mNavigationArray);
-        leftDrawerList.setAdapter(navigationDrawerAdapter);
+        /* set the list for navdrawer */
+        mNavigationArray.add(builSectionView(R.drawable.home, R.string.home));
+        mNavigationArray.add(builSectionView(R.drawable.marks, R.string.marks));
+        mNavigationArray.add(builSectionView(R.drawable.calendar, R.string.calendar));
+
+        navigationDrawerAdapter = new EpiAndroidNavigationAdapter(mNavigationArray);
+        listDrawer.setAdapter(navigationDrawerAdapter);
 
         mPictureView = (ImageView) findViewById(R.id.profile_image);
         mLogin = (TextView) findViewById(R.id.login_textview);
         mMail = (TextView) findViewById(R.id.mail_textview);
 
-        EpitechService.postRequest("infos", null, mEpitechServicePostResponseHandler);
+        listDrawer.setOnItemClickListener(this);
 
-        //Fragment provisoire
-        Fragment marksFragment = new MarksFragment();
-
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, marksFragment).commit();
-
-
+        changeSelection(mNavigationArray.get(1), 1);
     }
 
     private void initDrawer() {
@@ -156,4 +172,69 @@ public class HomeActivity extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        changeSelection(view, position);
+        navigationDrawerAdapter.notifyDataSetChanged();
+    }
+
+    public void changeSelection(View view, int position) {
+        ImageView imageView = (ImageView) view.findViewById(R.id.icon_section);
+        TextView textView = (TextView) view.findViewById(R.id.text_section);
+
+        if (view == currentSectionSelected) {
+            return;
+        }
+
+        if (currentSectionSelected != null) {
+            ImageView oldImageView = (ImageView) currentSectionSelected.findViewById(R.id.icon_section);
+            TextView oldTextView = (TextView) currentSectionSelected.findViewById(R.id.text_section);
+            oldImageView.clearColorFilter();
+            oldTextView.setTextColor(textSectionColor);
+        } else {
+            textSectionColor = textView.getCurrentTextColor();
+        }
+        imageView.setColorFilter(getResources().getColor(R.color.primaryColor));
+        textView.setTextColor(getResources().getColor(R.color.primaryColor));
+        currentSectionSelected = view;
+
+        Fragment fragment = null;
+        /* change fragment */
+        switch (position) {
+            case 0:
+                break;
+            case 1:
+                fragment = new MarksFragment();
+                break;
+            case 2:
+                break;
+        }
+        if (fragment != null) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        }
+        drawerLayout.closeDrawers();
+    }
+
+    public void logout(View view) {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle(R.string.logout)
+                .setMessage(R.string.really_logout)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        //Stop the activity
+                        Utils.makeText(HomeActivity.this, "Logout !");
+                        UserPreferenceHelper.logout(HomeActivity.this);
+                        HomeActivity.this.finish();
+                    }
+
+                })
+                .setNegativeButton(R.string.no, null)
+                .show();
+            }
 }

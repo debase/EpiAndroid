@@ -51,31 +51,39 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         // if user already loged in go to the home activity
         isUserLogedIn = UserPreferenceHelper.isUserLogedIn(this);
         if (isUserLogedIn) {
-            String login = UserPreferenceHelper.getLogin(this);
-            String passwd = UserPreferenceHelper.getPassword(this);
-
-            // initialize the epitech service url api and token
-            EpitechService.initialize("http://epitech-api.herokuapp.com/");
-
-            setContentView(R.layout.login_spinner);
-
-            loginSpinnerLayout = (RelativeLayout) findViewById(R.id.logging_layout_spinner);
-            loginSpinnerLayout.setVisibility(View.VISIBLE);
-
-            EpitechService.authenticate(login, passwd, epitechServicePostResponseHandler);
+            alreadyLogedIn();
         } else {
-            setContentView(R.layout.login_activity);
-
-            // initialize the epitech service url api
-            EpitechService.initialize("http://epitech-api.herokuapp.com/");
-
-            loginSpinnerLayout = (RelativeLayout) findViewById(R.id.logging_layout_spinner);
-
-            this.loginField = (EditText)findViewById(R.id.loginField);
-            this.passwordField = (EditText)findViewById(R.id.passwordField);
-            this.loginButton = (Button)findViewById(R.id.loginButton);
-            this.loginButton.setOnClickListener(this);
+            notLogedIn();
         }
+    }
+
+    public void alreadyLogedIn() {
+        String login = UserPreferenceHelper.getLogin(this);
+        String passwd = UserPreferenceHelper.getPassword(this);
+
+        // initialize the epitech service url api and token
+        EpitechService.initialize("http://epitech-api.herokuapp.com/");
+
+        setContentView(R.layout.login_spinner);
+
+        loginSpinnerLayout = (RelativeLayout) findViewById(R.id.logging_layout_spinner);
+        loginSpinnerLayout.setVisibility(View.VISIBLE);
+
+        EpitechService.authenticate(login, passwd, epitechServicePostResponseHandler);
+    }
+
+    public void notLogedIn() {
+        setContentView(R.layout.login_activity);
+
+        // initialize the epitech service url api
+        EpitechService.initialize("http://epitech-api.herokuapp.com/");
+
+        loginSpinnerLayout = (RelativeLayout) findViewById(R.id.logging_layout_spinner);
+
+        this.loginField = (EditText)findViewById(R.id.loginField);
+        this.passwordField = (EditText)findViewById(R.id.passwordField);
+        this.loginButton = (Button)findViewById(R.id.loginButton);
+        this.loginButton.setOnClickListener(this);
     }
 
     @Override
@@ -105,15 +113,29 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
             // set user preference for futur launch
             UserPreferenceHelper.loginInfo(this, login, password);
-            UserPreferenceHelper.setUserLogedIn(this, true);
         }
 
         if (result) {
             Intent epiAndroidIntent = new Intent(LoginActivity.this, HomeActivity.class);
-            startActivity(epiAndroidIntent);
-            finish();
+            epiAndroidIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivityForResult(epiAndroidIntent, 42);
         } else {
 
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 2
+        if(requestCode == 42)
+        {
+            if (UserPreferenceHelper.isUserLogedIn(this)) {
+                finish();
+            } else {
+                notLogedIn();
+            }
         }
     }
 }
