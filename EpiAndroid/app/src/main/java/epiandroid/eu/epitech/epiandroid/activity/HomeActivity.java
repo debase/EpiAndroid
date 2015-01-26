@@ -29,7 +29,7 @@ import epiandroid.eu.epitech.epiandroid.Fragment.MarksFragment;
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.adapter.EpiAndroidNavigationAdapter;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
-import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechServiceResponseHandler;
+import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechServicePostResponseHandler;
 import navigation_drawer.NavigationDrawerItem;
 
 /**
@@ -46,7 +46,7 @@ public class HomeActivity extends ActionBarActivity {
     private BaseAdapter navigationDrawerAdapter;
     private List<NavigationDrawerItem> mNavigationArray = new ArrayList<>();
 
-    private EpitechServiceResponseHandler mEpitechServiceResponseHandler = new EpitechServiceResponseHandler() {
+    private EpitechServicePostResponseHandler mEpitechServicePostResponseHandler = new EpitechServicePostResponseHandler() {
         @Override
         public void onSuccess(int statusCode, JSONObject jsonObject) {
             try {
@@ -98,7 +98,7 @@ public class HomeActivity extends ActionBarActivity {
         mLogin = (TextView) findViewById(R.id.login_textview);
         mMail = (TextView) findViewById(R.id.mail_textview);
 
-        EpitechService.postRequest("infos", null, mEpitechServiceResponseHandler);
+        EpitechService.postRequest("infos", null, mEpitechServicePostResponseHandler);
 
         //Fragment provisoire
         Fragment marksFragment = new MarksFragment();
