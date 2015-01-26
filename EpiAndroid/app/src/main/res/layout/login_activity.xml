@@ -39,33 +39,5 @@
         android:layout_alignRight="@+id/passwordField"
         android:layout_alignEnd="@+id/passwordField" />
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/logging_layout_spinner"
-        android:visibility="gone"
-        android:layout_below="@+id/loginButton">
-        <ProgressBar
-            android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/textView"
-            android:layout_centerHorizontal="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/loging_you_in"
-            android:id="@+id/textView"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true">
-
-            </TextView>
-
-    </RelativeLayout>
-
+    <include layout="@layout/login_spinner" />
 </RelativeLayout>

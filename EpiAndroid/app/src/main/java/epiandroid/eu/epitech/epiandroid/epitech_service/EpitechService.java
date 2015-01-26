@@ -21,12 +21,7 @@ public class EpitechService {
         BASE_URL = urlApi;
     }
 
-    public static void initialize(String urlApi, String token) {
-        BASE_URL = urlApi;
-        mToken = token;
-    }
-
-    public static void authanticate(String login, String password, final EpitechServiceResponseHandler responseHandler) {
+    public static void authenticate(String login, String password, final EpitechServiceResponseHandler responseHandler) {
         final RequestParams requestParams = new RequestParams();
         requestParams.add("login", login);
         requestParams.add("password", password);
@@ -38,25 +33,31 @@ public class EpitechService {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                responseHandler.onSuccess(statusCode, response);
+                if (responseHandler != null)
+                    responseHandler.onSuccess(statusCode, response);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
-                responseHandler.onFailure(statusCode, jsonObject);
+                if (responseHandler != null)
+                    responseHandler.onFailure(statusCode, jsonObject);
             }
         });
     }
 
-    public static void postRequest(String section, RequestParams requestParams, JsonHttpResponseHandler responseHandler) throws EpitechServiceException {
+    public static void postRequest(String section, RequestParams requestParams, EpitechServiceResponseHandler responseHandler) {
         if (mToken == null) {
-            throw new EpitechServiceException("Your are not logged in [token invalid]");
+            try {
+                throw new EpitechServiceException("Your are not loged in [token invalid]");
+            } catch (EpitechServiceException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        if (requestParams == null) {
+            requestParams = new RequestParams();
         }
         requestParams.add("token", mToken);
         mClient.post(BASE_URL + section, requestParams, responseHandler);
-    }
-
-    public static String getToken() {
-        return mToken;
     }
 }

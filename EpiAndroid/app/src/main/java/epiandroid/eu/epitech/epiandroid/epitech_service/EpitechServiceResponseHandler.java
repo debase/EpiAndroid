@@ -10,12 +10,12 @@ import org.json.JSONObject;
  */
 public abstract class EpitechServiceResponseHandler extends JsonHttpResponseHandler {
     @Override
-    public void onSuccess(int statusCode, Header[] headers, JSONObject jsonResponse) {
+    public final void onSuccess(int statusCode, Header[] headers, JSONObject jsonResponse) {
         onSuccess(statusCode, jsonResponse);
     }
 
     @Override
-    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonErrorResponse) {
+    public final void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonErrorResponse) {
         onFailure(statusCode, jsonErrorResponse);
     }
 
