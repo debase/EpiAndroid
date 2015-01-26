@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
-import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechServiceResponseHandler;
+import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechServicePostResponseHandler;
 import epiandroid.eu.epitech.epiandroid.preference.UserPreferenceHelper;
 
 
@@ -26,7 +26,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     private boolean isUserLogedIn = false;
     private RelativeLayout loginSpinnerLayout = null;
 
-    private EpitechServiceResponseHandler epitechServiceResponseHandler = new EpitechServiceResponseHandler() {
+    private EpitechServicePostResponseHandler epitechServicePostResponseHandler = new EpitechServicePostResponseHandler() {
         @Override
         public void onSuccess(int statusCode, JSONObject jsonObject) {
             try {
@@ -62,7 +62,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
             loginSpinnerLayout = (RelativeLayout) findViewById(R.id.logging_layout_spinner);
             loginSpinnerLayout.setVisibility(View.VISIBLE);
 
-            EpitechService.authenticate(login, passwd, epitechServiceResponseHandler);
+            EpitechService.authenticate(login, passwd, epitechServicePostResponseHandler);
         } else {
             setContentView(R.layout.login_activity);
 
@@ -90,7 +90,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
             loginSpinnerLayout.setVisibility(View.VISIBLE);
 
             // launch authentification
-            EpitechService.authenticate(login, password, epitechServiceResponseHandler);
+            EpitechService.authenticate(login, password, epitechServicePostResponseHandler);
         }
     }
 
