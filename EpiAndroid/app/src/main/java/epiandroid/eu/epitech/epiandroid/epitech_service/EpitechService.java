@@ -50,7 +50,7 @@ public class EpitechService {
 
     public static void postRequest(String section, RequestParams requestParams, JsonHttpResponseHandler responseHandler) throws EpitechServiceException {
         if (mToken == null) {
-            throw new EpitechServiceException("Your are not loged in [token invalid]");
+            throw new EpitechServiceException("Your are not logged in [token invalid]");
         }
         requestParams.add("token", mToken);
         mClient.post(BASE_URL + section, requestParams, responseHandler);

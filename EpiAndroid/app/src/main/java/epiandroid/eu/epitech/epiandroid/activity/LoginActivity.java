@@ -22,7 +22,6 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
     private EditText loginField;
     private EditText passwordField;
-    private Button loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +44,8 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
         this.loginField = (EditText)findViewById(R.id.loginField);
         this.passwordField = (EditText)findViewById(R.id.passwordField);
-        this.loginButton = (Button)findViewById(R.id.loginButton);
-        this.loginButton.setOnClickListener(this);
+        Button loginButton = (Button) findViewById(R.id.loginButton);
+        loginButton.setOnClickListener(this);
     }
 
     @Override
