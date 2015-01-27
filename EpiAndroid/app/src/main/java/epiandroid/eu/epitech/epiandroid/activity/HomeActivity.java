@@ -138,6 +138,8 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
             }
         };
         drawerLayout.setDrawerListener(drawerToggle);
+        drawerLayout.setStatusBarBackgroundColor(
+                getResources().getColor(R.color.primaryColorDark));
     }
 
     @Override
