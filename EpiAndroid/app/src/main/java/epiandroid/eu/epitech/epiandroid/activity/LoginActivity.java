@@ -89,7 +89,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
             // get the layout login spinner and set to visible
             loginSpinnerLayout.setVisibility(View.VISIBLE);
 
-            // launch authentification
+            // launch authentication
             EpitechService.authenticate(login, password, epitechServicePostResponseHandler);
         }
     }

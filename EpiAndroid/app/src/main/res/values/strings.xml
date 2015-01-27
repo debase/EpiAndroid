@@ -17,4 +17,7 @@
     <string name="navdrawer_login">login</string>
     <string name="navdrawer_email">email</string>
     <string name="marks">Note</string>
+    <string name="navdrawer_planning">Planning</string>
+
+    <string name="planning_today">Today</string>
 </resources>

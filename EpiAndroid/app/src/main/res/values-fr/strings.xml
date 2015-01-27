@@ -4,4 +4,6 @@
     <string name="connection_button">Se connecter</string>
     <string name="connection_login">Identifiant</string>
     <string name="connection_password">Mot de passe</string>
+    <string name="navdrawer_planning">Planning</string>
+    <string name="planning_today">Aujourd\'hui</string>
 </resources>

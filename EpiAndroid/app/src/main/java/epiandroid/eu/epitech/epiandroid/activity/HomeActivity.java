@@ -4,10 +4,12 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +28,7 @@ import java.util.List;
 
 import epiandroid.eu.epitech.epiandroid.CircleTransform;
 import epiandroid.eu.epitech.epiandroid.Fragment.MarksFragment;
+import epiandroid.eu.epitech.epiandroid.Fragment.PlanningFragment;
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.adapter.EpiAndroidNavigationAdapter;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
@@ -81,7 +84,6 @@ public class HomeActivity extends ActionBarActivity {
             setSupportActionBar(toolbar);
         }
         initDrawer();
-
     }
 
     private void initView() {
@@ -91,6 +93,7 @@ public class HomeActivity extends ActionBarActivity {
 
 
         mNavigationArray.add(new NavigationDrawerItem(R.drawable.marks, getResources().getString(R.string.marks)));
+        mNavigationArray.add(new NavigationDrawerItem(R.drawable.marks, getResources().getString(R.string.navdrawer_planning)));
         navigationDrawerAdapter = new EpiAndroidNavigationAdapter(this, mNavigationArray);
         leftDrawerList.setAdapter(navigationDrawerAdapter);
 
@@ -101,12 +104,15 @@ public class HomeActivity extends ActionBarActivity {
         EpitechService.postRequest("infos", null, mEpitechServicePostResponseHandler);
 
         //Fragment provisoire
-        Fragment marksFragment = new MarksFragment();
+//        Fragment marksFragment = new MarksFragment();
+//
+//        FragmentManager fragmentManager = getFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.content_frame, marksFragment).commit();
+
+        Fragment planningFragment = new PlanningFragment();
 
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, marksFragment).commit();
-
-
+        fragmentManager.beginTransaction().replace(R.id.content_frame, planningFragment).commit();
     }
 
     private void initDrawer() {
