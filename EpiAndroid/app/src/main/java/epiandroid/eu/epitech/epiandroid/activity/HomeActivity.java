@@ -61,6 +61,7 @@ public class HomeActivity extends ActionBarActivity {
         fragmentManager.beginTransaction().replace(R.id.content_frame, marksFragment).commit();
 
 
+
     }
 
     private void initDrawer() {
