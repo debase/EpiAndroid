@@ -19,25 +19,13 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:foreground="?android:windowContentOverlay"
                 android:id="@+id/content_frame" />
 
         </RelativeLayout>
 
         <!-- navigation drawer -->
-        <RelativeLayout
-            android:layout_gravity="left|start"
-            android:layout_width="240dp"
-            android:background="#fff"
-            android:layout_height="match_parent">
-
-            <ListView
-                android:id="@+id/left_drawer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="#eee"
-                android:background="#fff"
-                android:dividerHeight="1dp" />
-        </RelativeLayout>
+        <include layout="@layout/navdrawer"/>
 
     </android.support.v4.widget.DrawerLayout>
 

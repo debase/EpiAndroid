@@ -21,7 +21,7 @@ public class EpitechService {
         BASE_URL = urlApi;
     }
 
-    public static void authenticate(String login, String password, final EpitechServiceResponseHandler responseHandler) {
+    public static void authenticate(String login, String password, final EpitechServicePostResponseHandler responseHandler) {
         final RequestParams requestParams = new RequestParams();
         requestParams.add("login", login);
         requestParams.add("password", password);
@@ -45,11 +45,35 @@ public class EpitechService {
         });
     }
 
-    public static void postRequest(String section, RequestParams requestParams, EpitechServiceResponseHandler responseHandler) throws EpitechServiceException {
+    public static void postRequest(String section, RequestParams requestParams, EpitechServicePostResponseHandler responseHandler) {
         if (mToken == null) {
-            throw new EpitechServiceException("Your are not loged in [token invalid]");
+            try {
+                throw new EpitechServiceException("Your are not loged in [token invalid]");
+            } catch (EpitechServiceException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        if (requestParams == null) {
+            requestParams = new RequestParams();
         }
         requestParams.add("token", mToken);
         mClient.post(BASE_URL + section, requestParams, responseHandler);
+    }
+
+    public static void getRequest(String section, RequestParams requestParams, EpitechServiceGetResponseHandler responseHandler) {
+        if (mToken == null) {
+            try {
+                throw new EpitechServiceException("Your are not loged in [token invalid]");
+            } catch (EpitechServiceException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        if (requestParams == null) {
+            requestParams = new RequestParams();
+        }
+        requestParams.add("token", mToken);
+        mClient.get(BASE_URL + section, requestParams, responseHandler);
     }
 }

@@ -8,7 +8,8 @@ import org.json.JSONObject;
 /**
  * Created by debas on 20/01/15.
  */
-public abstract class EpitechServiceResponseHandler extends JsonHttpResponseHandler {
+public abstract class EpitechServicePostResponseHandler extends JsonHttpResponseHandler {
+
     @Override
     public final void onSuccess(int statusCode, Header[] headers, JSONObject jsonResponse) {
         onSuccess(statusCode, jsonResponse);

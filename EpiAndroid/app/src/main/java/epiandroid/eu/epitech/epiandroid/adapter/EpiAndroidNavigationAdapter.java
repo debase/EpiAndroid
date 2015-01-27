@@ -10,21 +10,20 @@ import java.util.List;
  * Created by debas on 20/01/15.
  */
 public class EpiAndroidNavigationAdapter extends BaseAdapter {
-
-    private List<View> mItemView;
+    private List<View> mListView;
 
     public EpiAndroidNavigationAdapter(List<View> itemView) {
-        mItemView = itemView;
+        mListView = itemView;
     }
 
     @Override
     public int getCount() {
-        return mItemView.size();
+        return mListView.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mItemView.get(position);
+        return mListView.get(position);
     }
 
     @Override
@@ -34,6 +33,6 @@ public class EpiAndroidNavigationAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return  mItemView.get(position);
+        return mListView.get(position);
     }
 }
