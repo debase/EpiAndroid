@@ -1,4 +1,4 @@
-package epiandroid.eu.epitech.epiandroid.Fragment;
+package epiandroid.eu.epitech.epiandroid.fragment;
 
 import android.os.Bundle;
 import android.app.Fragment;
@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;

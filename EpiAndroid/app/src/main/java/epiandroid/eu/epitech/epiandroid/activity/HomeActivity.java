@@ -31,11 +31,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import epiandroid.eu.epitech.epiandroid.CircleTransform;
-import epiandroid.eu.epitech.epiandroid.Fragment.MarksFragment;
-import epiandroid.eu.epitech.epiandroid.Fragment.PlanningFragment;
+import epiandroid.eu.epitech.epiandroid.fragment.MarksFragment;
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.adapter.EpiAndroidNavigationAdapter;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
+import epiandroid.eu.epitech.epiandroid.fragment.PlanningFragment;
 import epiandroid.eu.epitech.epiandroid.preference.UserPreferenceHelper;
 import epiandroid.eu.epitech.epiandroid.utils.Utils;
 
@@ -118,7 +118,6 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
         mMail = (TextView) findViewById(R.id.mail_textview);
 
         listDrawer.setOnItemClickListener(this);
-
         changeSelection(mNavigationArray.get(1), 1);
     }
 

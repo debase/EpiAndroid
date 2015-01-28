@@ -46,7 +46,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
             Toast.makeText(LoginActivity.this, "Authantification failed with error code " + statusCode + errorResponse, Toast.LENGTH_LONG).show();
             onFinishedAuthenticate(true);
         }
-     };
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
