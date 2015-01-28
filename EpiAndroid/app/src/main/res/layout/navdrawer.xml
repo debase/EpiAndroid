@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation_drawer.ScrimInsetsFrameLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/navdrawer_width"
     android:layout_height="match_parent"
+    android:paddingTop="@dimen/tool_bar_top_padding"
     android:layout_gravity="start"
     android:fitsSystemWindows="true"
+    app:insetForeground="#4000"
     android:background="@color/navdrawer_background">
 
     <LinearLayout
@@ -69,18 +73,15 @@
             android:divider="@null">
         </ListView>
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
+        <include layout="@layout/navdrawer_separator"/>
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent" android:layout_height="48dp"
             android:onClick="logout">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:id="@+id/icon_section"
                 android:layout_gravity="center_vertical"
                 android:layout_centerVertical="true"
@@ -103,4 +104,4 @@
                 android:layout_centerVertical="true"/>
         </RelativeLayout>
     </LinearLayout>
-</RelativeLayout>
+</navigation_drawer.ScrimInsetsFrameLayout>

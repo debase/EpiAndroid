@@ -23,6 +23,7 @@
     <string name="calendar">Planning</string>
     <string name="logout">Logout</string>
     <string name="really_logout">Voulez vous vraiment vous déconnecter ?</string>
+    <string name="validate_token">Validate token</string>
 
     <string name="yes">oui</string>
     <string name="no">non</string>
@@ -41,4 +42,6 @@
     <string name="november">november</string>
     <string name="december">december</string>
     <string name="home">Home</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
 </resources>

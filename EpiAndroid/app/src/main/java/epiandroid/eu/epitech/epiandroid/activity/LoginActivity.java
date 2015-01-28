@@ -3,19 +3,20 @@ package epiandroid.eu.epitech.epiandroid.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
-import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechServicePostResponseHandler;
 import epiandroid.eu.epitech.epiandroid.preference.UserPreferenceHelper;
 
 
@@ -27,12 +28,12 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     private boolean isUserLogedIn = false;
     private RelativeLayout loginSpinnerLayout = null;
 
-    private EpitechServicePostResponseHandler epitechServicePostResponseHandler = new EpitechServicePostResponseHandler() {
+    private JsonHttpResponseHandler epitechServicePostResponseHandler = new JsonHttpResponseHandler() {
         @Override
-        public void onSuccess(int statusCode, JSONObject jsonObject) {
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            super.onSuccess(statusCode, headers, response);
             try {
-                Toast.makeText(LoginActivity.this, "Authantification success token : " + jsonObject.getString("token"), Toast.LENGTH_LONG).show();
-                Log.i("LoginActivity", "Token : " + jsonObject.getString("token"));
+                Toast.makeText(LoginActivity.this, "Authantification success token : " + response.getString("token"), Toast.LENGTH_LONG).show();
                 onFinishedAuthenticate(true);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -40,8 +41,9 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         }
 
         @Override
-        public void onFailure(int statusCode, JSONObject jsonObject) {
-            Toast.makeText(LoginActivity.this, "Authantification failed with error code " + statusCode, Toast.LENGTH_LONG).show();
+        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            super.onFailure(statusCode, headers, throwable, errorResponse);
+            Toast.makeText(LoginActivity.this, "Authantification failed with error code " + statusCode + errorResponse, Toast.LENGTH_LONG).show();
             onFinishedAuthenticate(true);
         }
      };
