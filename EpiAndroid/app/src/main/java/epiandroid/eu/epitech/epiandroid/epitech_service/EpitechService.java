@@ -21,7 +21,7 @@ public class EpitechService {
         BASE_URL = urlApi;
     }
 
-    public static void authenticate(String login, String password, final EpitechServicePostResponseHandler responseHandler) {
+    public static void authenticate(String login, String password, final JsonHttpResponseHandler responseHandler) {
         final RequestParams requestParams = new RequestParams();
         requestParams.add("login", login);
         requestParams.add("password", password);
@@ -34,18 +34,18 @@ public class EpitechService {
                     e.printStackTrace();
                 }
                 if (responseHandler != null)
-                    responseHandler.onSuccess(statusCode, response);
+                    responseHandler.onSuccess(statusCode, headers, response);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject jsonObject) {
                 if (responseHandler != null)
-                    responseHandler.onFailure(statusCode, jsonObject);
+                    responseHandler.onFailure(statusCode, headers, throwable, jsonObject);
             }
         });
     }
 
-    public static void postRequest(String section, RequestParams requestParams, EpitechServicePostResponseHandler responseHandler) {
+    public static void postRequest(String section, RequestParams requestParams, JsonHttpResponseHandler responseHandler) {
         if (mToken == null) {
             try {
                 throw new EpitechServiceException("Your are not loged in [token invalid]");
@@ -61,7 +61,7 @@ public class EpitechService {
         mClient.post(BASE_URL + section, requestParams, responseHandler);
     }
 
-    public static void getRequest(String section, RequestParams requestParams, EpitechServiceGetResponseHandler responseHandler) {
+    public static void getRequest(String section, RequestParams requestParams, JsonHttpResponseHandler responseHandler) {
         if (mToken == null) {
             try {
                 throw new EpitechServiceException("Your are not loged in [token invalid]");

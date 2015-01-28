@@ -20,8 +20,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
+import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,11 +31,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import epiandroid.eu.epitech.epiandroid.CircleTransform;
-import epiandroid.eu.epitech.epiandroid.Fragment.MarksFragment;
+import epiandroid.eu.epitech.epiandroid.fragment.MarksFragment;
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.adapter.EpiAndroidNavigationAdapter;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
-import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechServicePostResponseHandler;
 import epiandroid.eu.epitech.epiandroid.preference.UserPreferenceHelper;
 import epiandroid.eu.epitech.epiandroid.utils.Utils;
 
@@ -53,11 +54,12 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
     private View currentSectionSelected = null;
     private int textSectionColor = 0;
 
-    private EpitechServicePostResponseHandler mEpitechServicePostResponseHandler = new EpitechServicePostResponseHandler() {
+    private JsonHttpResponseHandler mEpitechServicePostResponseHandler = new JsonHttpResponseHandler() {
         @Override
-        public void onSuccess(int statusCode, JSONObject jsonObject) {
+        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            super.onSuccess(statusCode, headers, response);
             try {
-                JSONObject infos = jsonObject.getJSONObject("infos");
+                JSONObject infos = response.getJSONObject("infos");
                 String urlProfilPicture = "https://cdn.local.epitech.eu/userprofil/" + infos.getString("picture");
                 mLogin.setText(infos.getString("title"));
                 mMail.setText(infos.getString("internal_email"));
@@ -69,11 +71,6 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
-
-        @Override
-        public void onFailure(int statusCode, JSONObject jsonObject) {
-
         }
     };
 
@@ -140,6 +137,8 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
             }
         };
         drawerLayout.setDrawerListener(drawerToggle);
+        drawerLayout.setStatusBarBackgroundColor(
+                getResources().getColor(R.color.primaryColorDark));
     }
 
     @Override
