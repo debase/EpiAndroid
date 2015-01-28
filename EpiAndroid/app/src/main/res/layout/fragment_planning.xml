@@ -1,0 +1,42 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="epiandroid.eu.epitech.epiandroid.Fragment.PlanningFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:text="@string/planning_today"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:ems="10"
+        android:id="@+id/planningDate"
+        android:layout_gravity="center_horizontal|top" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:text="&lt;-"
+        android:id="@+id/btnPrevDay"
+        android:layout_gravity="left|top" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:text="->"
+        android:id="@+id/btnNextDay"
+        android:layout_gravity="right|top" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="35dp"
+        android:id="@+id/planningList"
+        android:layout_gravity="center" />
+</FrameLayout>
