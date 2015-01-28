@@ -16,12 +16,32 @@
     <!--navdrawer strings-->
     <string name="navdrawer_login">login</string>
     <string name="navdrawer_email">email</string>
-    <string name="home">Acceuil</string>
-    <string name="marks">Note</string>
+    <string name="marks">Marks</string>
+    <string name="navdrawer_planning">Planning</string>
+
+    <string name="planning_today">Today</string>
     <string name="calendar">Planning</string>
-    <string name="logout">Déconnexion</string>
+    <string name="logout">Logout</string>
     <string name="really_logout">Voulez vous vraiment vous déconnecter ?</string>
+    <string name="validate_token">Validate token</string>
 
     <string name="yes">oui</string>
     <string name="no">non</string>
+
+    <!-- Months -->
+    <string name="january">january</string>
+    <string name="february">february</string>
+    <string name="march">march</string>
+    <string name="april">april</string>
+    <string name="may">may</string>
+    <string name="june">june</string>
+    <string name="july">july</string>
+    <string name="august">august</string>
+    <string name="september">september</string>
+    <string name="october">october</string>
+    <string name="november">november</string>
+    <string name="december">december</string>
+    <string name="home">Home</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
 </resources>

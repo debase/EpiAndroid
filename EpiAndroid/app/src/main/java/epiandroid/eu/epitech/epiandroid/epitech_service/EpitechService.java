@@ -48,7 +48,7 @@ public class EpitechService {
     public static void postRequest(String section, RequestParams requestParams, JsonHttpResponseHandler responseHandler) {
         if (mToken == null) {
             try {
-                throw new EpitechServiceException("Your are not loged in [token invalid]");
+                throw new EpitechServiceException("Your are not logged in [token invalid]");
             } catch (EpitechServiceException e) {
                 e.printStackTrace();
             }
@@ -64,7 +64,7 @@ public class EpitechService {
     public static void getRequest(String section, RequestParams requestParams, JsonHttpResponseHandler responseHandler) {
         if (mToken == null) {
             try {
-                throw new EpitechServiceException("Your are not loged in [token invalid]");
+                throw new EpitechServiceException("Your are not logged in [token invalid]");
             } catch (EpitechServiceException e) {
                 e.printStackTrace();
             }

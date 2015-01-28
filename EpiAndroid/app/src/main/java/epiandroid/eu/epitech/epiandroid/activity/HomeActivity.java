@@ -35,6 +35,7 @@ import epiandroid.eu.epitech.epiandroid.fragment.MarksFragment;
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.adapter.EpiAndroidNavigationAdapter;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
+import epiandroid.eu.epitech.epiandroid.fragment.PlanningFragment;
 import epiandroid.eu.epitech.epiandroid.preference.UserPreferenceHelper;
 import epiandroid.eu.epitech.epiandroid.utils.Utils;
 
@@ -81,11 +82,10 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
 
         initView();
         if (toolbar != null) {
-            toolbar.setTitle("Navigation Drawer");
+            toolbar.setTitle("Dashboard");
             setSupportActionBar(toolbar);
         }
         initDrawer();
-
     }
 
     public View builSectionView(int iconRes, int stringRes) {
@@ -204,8 +204,11 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
                 break;
             case 1:
                 fragment = new MarksFragment();
+                toolbar.setTitle(getResources().getString(R.string.marks));
                 break;
             case 2:
+                fragment = new PlanningFragment();
+                toolbar.setTitle(getResources().getString(R.string.navdrawer_planning));
                 break;
         }
         if (fragment != null) {

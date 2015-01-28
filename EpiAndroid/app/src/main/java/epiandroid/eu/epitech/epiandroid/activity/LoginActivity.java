@@ -34,7 +34,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
             super.onSuccess(statusCode, headers, response);
             try {
                 Toast.makeText(LoginActivity.this, "Authantification success token : " + response.getString("token"), Toast.LENGTH_LONG).show();
-                onFinisheAuthanticate(true);
+                onFinishedAuthenticate(true);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -44,7 +44,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
             super.onFailure(statusCode, headers, throwable, errorResponse);
             Toast.makeText(LoginActivity.this, "Authantification failed with error code " + statusCode + errorResponse, Toast.LENGTH_LONG).show();
-            onFinisheAuthanticate(true);
+            onFinishedAuthenticate(true);
         }
     };
 
@@ -102,20 +102,20 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
             // get the layout login spinner and set to visible
             loginSpinnerLayout.setVisibility(View.VISIBLE);
 
-            // launch authentification
+            // launch authentication
             EpitechService.authenticate(login, password, epitechServicePostResponseHandler);
         }
     }
 
     // launch the home activity
-    public void onFinisheAuthanticate(boolean result) {
+    public void onFinishedAuthenticate(boolean result) {
         loginSpinnerLayout.setVisibility(View.GONE);
 
         if (!isUserLogedIn) {
             String login = loginField.getText().toString();
             String password = passwordField.getText().toString();
 
-            // set user preference for futur launch
+            // set user preference for future launch
             UserPreferenceHelper.loginInfo(this, login, password);
         }
 
