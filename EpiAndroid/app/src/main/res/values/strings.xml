@@ -18,6 +18,8 @@
     <string name="navdrawer_email">email</string>
     <string name="marks">Marks</string>
     <string name="navdrawer_planning">Planning</string>
+    <string name="dashboard">Dashboard</string>
+
 
     <string name="planning_today">Today</string>
     <string name="calendar">Planning</string>

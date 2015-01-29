@@ -1,11 +1,11 @@
 package epiandroid.eu.epitech.epiandroid.activity;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,22 +20,20 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
-
-import org.apache.http.Header;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import epiandroid.eu.epitech.epiandroid.CircleTransform;
-import epiandroid.eu.epitech.epiandroid.fragment.MarksFragment;
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.adapter.EpiAndroidNavigationAdapter;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
+import epiandroid.eu.epitech.epiandroid.epitech_service.GsonResponseHandler;
+import epiandroid.eu.epitech.epiandroid.fragment.DashboardFragment;
+import epiandroid.eu.epitech.epiandroid.fragment.MarksFragment;
 import epiandroid.eu.epitech.epiandroid.fragment.PlanningFragment;
+import epiandroid.eu.epitech.epiandroid.model.InfoModel;
 import epiandroid.eu.epitech.epiandroid.preference.UserPreferenceHelper;
 import epiandroid.eu.epitech.epiandroid.utils.Utils;
 
@@ -54,33 +52,34 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
     private List<View> mNavigationArray = new ArrayList<>();
     private View currentSectionSelected = null;
     private int textSectionColor = 0;
+    private int tabIndex = 0;
+    private InfoModel mInfoModel = null;
 
-    private JsonHttpResponseHandler mEpitechServicePostResponseHandler = new JsonHttpResponseHandler() {
+    private GsonResponseHandler<InfoModel> mInfoItemGsonResponseHandler = new GsonResponseHandler<InfoModel>(InfoModel.class) {
         @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            super.onSuccess(statusCode, headers, response);
-            try {
-                JSONObject infos = response.getJSONObject("infos");
-                String urlProfilPicture = "https://cdn.local.epitech.eu/userprofil/" + infos.getString("picture");
-                mLogin.setText(infos.getString("title"));
-                mMail.setText(infos.getString("internal_email"));
-                Picasso.with(HomeActivity.this)
-                        .load(urlProfilPicture)
-                        .transform(new CircleTransform())
-                        .error(R.drawable.person_image_empty)
-                        .into(mPictureView);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        public void onSuccess(InfoModel infoItem) {
+            mInfoModel = infoItem;
+            setUpInfoNav(infoItem);
         }
     };
+
+    private void setUpInfoNav(InfoModel infoItem) {
+        String urlProfilPicture = "https://cdn.local.epitech.eu/userprofil/profilview/" + infoItem.infos.login + ".jpg";
+        mLogin.setText(infoItem.infos.title);
+        mMail.setText(infoItem.infos.mail);
+        Picasso.with(HomeActivity.this)
+                .load(urlProfilPicture)
+                .transform(new CircleTransform())
+                .error(R.drawable.person_image_empty)
+                .into(mPictureView);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
 
-        initView();
+        initView(savedInstanceState);
         if (toolbar != null) {
             toolbar.setTitle("Dashboard");
             setSupportActionBar(toolbar);
@@ -98,12 +97,10 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
         return view;
     }
 
-    private void initView() {
+    private void initView(Bundle saveInstanceState) {
         listDrawer = (ListView) findViewById(R.id.navdrawer_listview);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-
-        EpitechService.postRequest("infos", null, mEpitechServicePostResponseHandler);
 
         /* set the list for navdrawer */
         mNavigationArray.add(builSectionView(R.drawable.home, R.string.home));
@@ -113,12 +110,23 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
         navigationDrawerAdapter = new EpiAndroidNavigationAdapter(mNavigationArray);
         listDrawer.setAdapter(navigationDrawerAdapter);
 
+        /* get ui element */
         mPictureView = (ImageView) findViewById(R.id.profile_image);
         mLogin = (TextView) findViewById(R.id.login_textview);
         mMail = (TextView) findViewById(R.id.mail_textview);
 
         listDrawer.setOnItemClickListener(this);
-        changeSelection(mNavigationArray.get(1), 1);
+
+        if (saveInstanceState == null) {
+            EpitechService.postRequest("infos", null, mInfoItemGsonResponseHandler);
+        } else {
+            mInfoModel = (InfoModel) saveInstanceState.getSerializable("info");
+            tabIndex = saveInstanceState.getInt("tab_index");
+            Utils.makeText(this, "Not null : " + mInfoModel.infos.mail);
+            setUpInfoNav(mInfoModel);
+        }
+
+        changeSelection(mNavigationArray.get(tabIndex), tabIndex);
     }
 
     private void initDrawer() {
@@ -181,6 +189,7 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
         ImageView imageView = (ImageView) view.findViewById(R.id.icon_section);
         TextView textView = (TextView) view.findViewById(R.id.text_section);
 
+        tabIndex = position;
         if (view == currentSectionSelected) {
             return;
         }
@@ -197,23 +206,31 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
         textView.setTextColor(getResources().getColor(R.color.primaryColor));
         currentSectionSelected = view;
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = null;
         /* change fragment */
         switch (position) {
             case 0:
+                if ((fragment = fragmentManager.findFragmentByTag(DashboardFragment.class.getSimpleName())) == null) {
+                    fragment = new DashboardFragment();
+                }
+                toolbar.setTitle(getResources().getString(R.string.dashboard));
                 break;
             case 1:
-                fragment = new MarksFragment();
+                if ((fragment = fragmentManager.findFragmentByTag(MarksFragment.class.getSimpleName())) == null) {
+                    fragment = new MarksFragment();
+                }
                 toolbar.setTitle(getResources().getString(R.string.marks));
                 break;
             case 2:
-                fragment = new PlanningFragment();
+                if ((fragment = fragmentManager.findFragmentByTag(PlanningFragment.class.getSimpleName())) == null) {
+                    fragment = new PlanningFragment();
+                }
                 toolbar.setTitle(getResources().getString(R.string.navdrawer_planning));
                 break;
         }
         if (fragment != null) {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment, fragment.getClass().getSimpleName()).commit();
         }
         drawerLayout.closeDrawers();
     }
@@ -238,4 +255,10 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
                 .setNegativeButton(R.string.no, null)
                 .show();
             }
+    @Override
+    protected void onSaveInstanceState(Bundle state) {
+        Utils.makeText(this, "saving instance");
+        state.putSerializable("info", mInfoModel);
+        state.putInt("tab_index", tabIndex);
+    }
 }

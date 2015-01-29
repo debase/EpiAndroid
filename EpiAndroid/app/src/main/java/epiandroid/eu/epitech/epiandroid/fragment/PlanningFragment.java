@@ -1,7 +1,7 @@
 package epiandroid.eu.epitech.epiandroid.fragment;
 
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +22,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import epiandroid.eu.epitech.epiandroid.model.PlanningItem;
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.adapter.PlanningAdapter;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
+import epiandroid.eu.epitech.epiandroid.model.PlanningItem;
 
 public class PlanningFragment extends Fragment implements View.OnClickListener {
 
