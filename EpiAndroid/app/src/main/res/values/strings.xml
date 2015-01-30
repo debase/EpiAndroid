@@ -46,4 +46,7 @@
     <string name="home">Home</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
+
+    <!--Text test-->
+    <string name="lorem_ipsum">lorem ipsum doler si amet</string>
 </resources>

@@ -54,6 +54,7 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
     private int textSectionColor = 0;
     private int tabIndex = 0;
     private InfoModel mInfoModel = null;
+    private Fragment currentFragment = null;
 
     private GsonResponseHandler<InfoModel> mInfoItemGsonResponseHandler = new GsonResponseHandler<InfoModel>(InfoModel.class) {
         @Override
@@ -81,7 +82,6 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
 
         initView(savedInstanceState);
         if (toolbar != null) {
-            toolbar.setTitle("Dashboard");
             setSupportActionBar(toolbar);
         }
         initDrawer();
@@ -117,16 +117,8 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
 
         listDrawer.setOnItemClickListener(this);
 
-        if (saveInstanceState == null) {
-            EpitechService.postRequest("infos", null, mInfoItemGsonResponseHandler);
-        } else {
-            mInfoModel = (InfoModel) saveInstanceState.getSerializable("info");
-            tabIndex = saveInstanceState.getInt("tab_index");
-            Utils.makeText(this, "Not null : " + mInfoModel.infos.mail);
-            setUpInfoNav(mInfoModel);
-        }
-
-        changeSelection(mNavigationArray.get(tabIndex), tabIndex);
+        EpitechService.postRequest("infos", null, mInfoItemGsonResponseHandler);
+        changeSelection(mNavigationArray.get(tabIndex), tabIndex, true);
     }
 
     private void initDrawer() {
@@ -181,11 +173,11 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        changeSelection(view, position);
+        changeSelection(view, position, true);
         navigationDrawerAdapter.notifyDataSetChanged();
     }
 
-    public void changeSelection(View view, int position) {
+    public void changeSelection(View view, int position, boolean replaceFragment) {
         ImageView imageView = (ImageView) view.findViewById(R.id.icon_section);
         TextView textView = (TextView) view.findViewById(R.id.text_section);
 
@@ -206,32 +198,31 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
         textView.setTextColor(getResources().getColor(R.color.primaryColor));
         currentSectionSelected = view;
 
+        if (replaceFragment == false) {
+            return;
+        }
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = null;
         /* change fragment */
         switch (position) {
             case 0:
-                if ((fragment = fragmentManager.findFragmentByTag(DashboardFragment.class.getSimpleName())) == null) {
-                    fragment = new DashboardFragment();
-                }
+                fragment = new DashboardFragment();
                 toolbar.setTitle(getResources().getString(R.string.dashboard));
                 break;
             case 1:
-                if ((fragment = fragmentManager.findFragmentByTag(MarksFragment.class.getSimpleName())) == null) {
-                    fragment = new MarksFragment();
-                }
+                fragment = new MarksFragment();
                 toolbar.setTitle(getResources().getString(R.string.marks));
                 break;
             case 2:
-                if ((fragment = fragmentManager.findFragmentByTag(PlanningFragment.class.getSimpleName())) == null) {
-                    fragment = new PlanningFragment();
-                }
+                fragment = new PlanningFragment();
                 toolbar.setTitle(getResources().getString(R.string.navdrawer_planning));
                 break;
         }
         if (fragment != null) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment, fragment.getClass().getSimpleName()).commit();
         }
+        currentFragment = fragment;
         drawerLayout.closeDrawers();
     }
 
@@ -254,11 +245,5 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
                 })
                 .setNegativeButton(R.string.no, null)
                 .show();
-            }
-    @Override
-    protected void onSaveInstanceState(Bundle state) {
-        Utils.makeText(this, "saving instance");
-        state.putSerializable("info", mInfoModel);
-        state.putInt("tab_index", tabIndex);
     }
 }
