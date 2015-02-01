@@ -11,6 +11,8 @@ public class InfoModel implements Serializable {
     @SerializedName("infos")
     public InfoItem infos;
 
+    @SerializedName("current")
+    public InfoCurrentItem infoCurrent;
 
     @SerializedName("history")
     public HistoryItem[] history;
@@ -41,5 +43,20 @@ public class InfoModel implements Serializable {
 
         @SerializedName("promo")
         public String promo;
+    }
+
+    public class InfoCurrentItem implements Serializable {
+        @SerializedName("active_log")
+        public String active_log;
+
+        @SerializedName("achieved")
+        public String current_credit;
+
+        @SerializedName("credits_obj")
+        public String objectif_credit;
+
+        @SerializedName("semester_num")
+        public String user_semester;
+
     }
 }

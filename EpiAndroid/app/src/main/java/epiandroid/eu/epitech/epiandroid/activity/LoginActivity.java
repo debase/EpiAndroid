@@ -70,7 +70,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
         setContentView(R.layout.login_spinner);
 
-        loginSpinnerLayout = (RelativeLayout) findViewById(R.id.logging_layout_spinner);
+        loginSpinnerLayout = (RelativeLayout) findViewById(R.id.layout_spinner_loading);
         loginSpinnerLayout.setVisibility(View.VISIBLE);
 
         EpitechService.authenticate(login, passwd, epitechServicePostResponseHandler);
@@ -82,7 +82,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         // initialize the epitech service url api
         EpitechService.initialize("http://epitech-api.herokuapp.com/");
 
-        loginSpinnerLayout = (RelativeLayout) findViewById(R.id.logging_layout_spinner);
+        loginSpinnerLayout = (RelativeLayout) findViewById(R.id.layout_spinner_loading);
 
         this.loginField = (EditText)findViewById(R.id.loginField);
         this.passwordField = (EditText)findViewById(R.id.passwordField);

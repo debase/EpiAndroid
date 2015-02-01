@@ -103,7 +103,7 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
         /* set the list for navdrawer */
-        mNavigationArray.add(builSectionView(R.drawable.home, R.string.home));
+        mNavigationArray.add(builSectionView(R.drawable.home, R.string.dashboard));
         mNavigationArray.add(builSectionView(R.drawable.marks, R.string.marks));
         mNavigationArray.add(builSectionView(R.drawable.calendar, R.string.calendar));
 
