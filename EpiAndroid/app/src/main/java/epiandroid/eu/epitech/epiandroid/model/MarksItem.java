@@ -13,6 +13,9 @@ public class MarksItem {
     @SerializedName("final_note")
     private String mark;
 
+    @SerializedName("correcteur")
+    private String rater;
+
     public MarksItem(String name, String mark) {
         this.name = name;
         this.mark = mark;
@@ -36,5 +39,13 @@ public class MarksItem {
 
     public void setMark(String mark) {
         this.mark = mark;
+    }
+
+    public String getRater() {
+        return rater;
+    }
+
+    public void setRater(String rater) {
+        this.rater = rater;
     }
 }

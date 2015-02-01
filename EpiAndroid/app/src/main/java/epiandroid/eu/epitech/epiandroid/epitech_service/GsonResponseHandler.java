@@ -18,21 +18,21 @@ public abstract class GsonResponseHandler<Model> extends JsonHttpResponseHandler
     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
         super.onSuccess(statusCode, headers, response);
 
-        onSuccess(setModelFromJson(response.toString()));
+        onSuccess(getModelFromJson(response.toString()));
     }
 
     @Override
     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
         super.onSuccess(statusCode, headers, response);
 
-        onSuccess(setModelFromJson(response.toString()));
+        onSuccess(getModelFromJson(response.toString()));
     }
 
     public GsonResponseHandler(Class<Model> type) {
         this.type = type;
     }
 
-    public Model setModelFromJson(String json) {
+    private Model getModelFromJson(String json) {
         Gson gson = new Gson();
 
         return gson.fromJson(json, type);

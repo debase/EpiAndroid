@@ -9,4 +9,12 @@
     <dimen name="tool_bar_top_padding">0dp</dimen>
     <dimen name="header_view_dashboard_height">175dp</dimen>
     <dimen name="header_userimage_size">100dp</dimen>
+
+    
+    <!-- dimens for marks view -->
+    <dimen name="project_title">17dp</dimen>
+    <dimen name="project_mark">15dp</dimen>
+    <dimen name="project_rater">13dp</dimen>
+    
+    
 </resources>
