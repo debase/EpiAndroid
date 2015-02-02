@@ -1,5 +1,6 @@
 package epiandroid.eu.epitech.epiandroid.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -30,24 +31,43 @@ public class MarksFragment extends LoadingFragment {
 
     private View view;
     private ListView mMarkListView;
+    private Activity mActivity = null;
 
     private GsonResponseHandler<MarkModel> gsonResponseHandler = new GsonResponseHandler<MarkModel>(MarkModel.class) {
 
         @Override
         public void onSuccess(MarkModel markModel) {
+            if (mActivity == null)
+                return;
+
+            MarksViewAdapter adapter = new MarksViewAdapter(mActivity, R.layout.mark_item, new ArrayList<>(Arrays.asList(markModel.getMarksItem())));
+            mMarkListView.setAdapter(adapter);
+
             showLoading(false, null);
             showbaseView(true);
-
-            MarksViewAdapter adapter = new MarksViewAdapter(getActivity(), R.layout.mark_item, new ArrayList<>(Arrays.asList(markModel.getMarksItem())));
-            mMarkListView.setAdapter(adapter);
         }
 
         @Override
         public void onFailure(Throwable throwable, JSONObject errorResponse) {
+            if (mActivity == null)
+                return;
+
             showLoading(false, null);
             showError(true, getResources().getString(R.string.error_fetching_data));
         }
     };
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity = activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivity = null;
+    }
 
     private JsonHttpResponseHandler jsonHttpResponseHandler = new JsonHttpResponseHandler() {
         @Override

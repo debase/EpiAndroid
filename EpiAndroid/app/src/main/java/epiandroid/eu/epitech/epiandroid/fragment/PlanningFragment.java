@@ -1,5 +1,6 @@
 package epiandroid.eu.epitech.epiandroid.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,10 +32,14 @@ public class PlanningFragment extends LoadingFragment implements View.OnClickLis
     private Date currentDate = new Date();
     private String[] monthsNb = new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
     private String[] months;
+    private Activity mActivity = null;
 
     private GsonResponseHandler<PlanningItem[]> gsonResponseHandler = new GsonResponseHandler<PlanningItem[]>(PlanningItem[].class) {
         @Override
         public void onSuccess(PlanningItem[] planningItems) {
+            if (mActivity == null)
+                return;
+
             ArrayList<PlanningItem> contentList = new ArrayList<>();
             listAdapter = new PlanningAdapter(getActivity(), R.layout.adapter_planning, contentList);
 
@@ -57,10 +62,24 @@ public class PlanningFragment extends LoadingFragment implements View.OnClickLis
 
         @Override
         public void onFailure(Throwable throwable, JSONObject errorResponse) {
+            if (mActivity == null)
+                return;
             showLoading(false, null);
             showError(true, getResources().getString(R.string.error_fetching_data));
         }
     };
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity = activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivity = null;
+    }
 
     public PlanningFragment() {
         // Required empty public constructor

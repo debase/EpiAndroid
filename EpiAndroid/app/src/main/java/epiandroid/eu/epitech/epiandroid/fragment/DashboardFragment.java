@@ -40,33 +40,38 @@ public class DashboardFragment extends LoadingFragment implements ObservableScro
     private GsonResponseHandler<InfoModel> gsonResponseHandlerInfos = new GsonResponseHandler<InfoModel>(InfoModel.class) {
         @Override
         public void onSuccess(InfoModel infoModel) {
+            if (mActivity == null)
+                return;
+
             for (int i = 0; i < infoModel.history.length && i < 4; i++) {
                 InfoModel.HistoryItem hi = infoModel.history[i];
-                if (mActivity != null) {
-                    addHistoryToList(mActivity.getApplicationContext(), hi);
-                }
+                addHistoryToList(mActivity.getApplicationContext(), hi);
             }
-            if (mActivity != null) {
-                String urlProfilPicture = "https://cdn.local.epitech.eu/userprofil/profilview/" + infoModel.infos.login + ".jpg";
-                Picasso.with(mActivity)
-                        .load(urlProfilPicture)
-                        .transform(new CircleTransform())
-                        .error(R.drawable.person_image_empty)
-                        .into(mUserImageView);
-                mUserTitle.setText(infoModel.infos.title);
-                mUserMail.setText(infoModel.infos.mail);
-                mUserPromo.setText(infoModel.infos.promo);
-                mUserSemester.setText(infoModel.infoCurrent.user_semester);
-                mUserCurrentCredit.setText(infoModel.infoCurrent.current_credit);
-                mUserObjectifCredit.setText(infoModel.infoCurrent.objectif_credit);
-                mUserNetSoul.setText(infoModel.infoCurrent.active_log);
-                showLoading(false, null);
-                showbaseView(true);
-            }
+            String urlProfilPicture = "https://cdn.local.epitech.eu/userprofil/profilview/" + infoModel.infos.login + ".jpg";
+
+            Picasso.with(mActivity)
+                    .load(urlProfilPicture)
+                    .transform(new CircleTransform())
+                    .error(R.drawable.person_image_empty)
+                    .into(mUserImageView);
+
+            mUserTitle.setText(infoModel.infos.title);
+            mUserMail.setText(infoModel.infos.mail);
+            mUserPromo.setText(infoModel.infos.promo);
+            mUserSemester.setText(infoModel.infoCurrent.user_semester);
+            mUserCurrentCredit.setText(infoModel.infoCurrent.current_credit);
+            mUserObjectifCredit.setText(infoModel.infoCurrent.objectif_credit);
+            mUserNetSoul.setText(infoModel.infoCurrent.active_log);
+
+            showLoading(false, null);
+            showbaseView(true);
         }
 
         @Override
         public void onFailure(Throwable throwable, JSONObject errorResponse) {
+            if (mActivity == null)
+                return;
+
             showLoading(false, null);
             showError(true, getResources().getString(R.string.error_fetching_data));
         }
