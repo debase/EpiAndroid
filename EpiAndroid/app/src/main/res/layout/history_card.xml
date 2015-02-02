@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="5dp"
+    card_view:cardCornerRadius="4dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:text="@string/lorem_ipsum"
+            android:layout_width="wrap_content"
+            android:textColor="@color/secondary_text_default_material_light"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/secondary_text_default_material_light"
+            android:layout_height="wrap_content"/>
+
+        <include android:id="@+id/separator" layout="@layout/navdrawer_separator"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/history_user_info">
+
+            <ImageView
+                android:layout_width="@dimen/history_card_image_size"
+                android:layout_height="@dimen/history_card_image_size"
+                android:src="@drawable/person_image_empty"
+                android:visibility="visible"
+                android:id="@+id/history_image"
+                android:layout_marginRight="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/user_name"
+                    android:gravity="center_vertical"
+                    android:text="@string/lorem_ipsum"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/history_date"
+                    android:gravity="center_vertical"
+                    android:text="@string/lorem_ipsum"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

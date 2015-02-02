@@ -26,6 +26,7 @@ public class MarksViewAdapter extends ArrayAdapter<MarksItem> {
     static class ViewHolder {
         public TextView projectName;
         public TextView mark;
+        public TextView rater;
     }
 
     public MarksViewAdapter(Context context, int resource, ArrayList<MarksItem> objects) {
@@ -48,6 +49,7 @@ public class MarksViewAdapter extends ArrayAdapter<MarksItem> {
             viewHolder = new ViewHolder();
             viewHolder.projectName = (TextView) row.findViewById(R.id.project_name);
             viewHolder.mark = (TextView) row.findViewById(R.id.mark);
+            viewHolder.rater = (TextView) row.findViewById(R.id.rater);
             row.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -56,7 +58,7 @@ public class MarksViewAdapter extends ArrayAdapter<MarksItem> {
         MarksItem item = objects.get(position);
         viewHolder.projectName.setText(item.getName());
         viewHolder.mark.setText(item.getMark());
+        viewHolder.rater.setText(item.getRater());
         return row;
-
     }
 }

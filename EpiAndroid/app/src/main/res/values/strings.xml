@@ -18,6 +18,8 @@
     <string name="navdrawer_email">email</string>
     <string name="marks">Marks</string>
     <string name="navdrawer_planning">Planning</string>
+    <string name="dashboard">Dashboard</string>
+
 
     <string name="planning_today">Today</string>
     <string name="calendar">Planning</string>
@@ -44,4 +46,13 @@
     <string name="home">Home</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
+
+    <!--Text test-->
+    <string name="lorem_ipsum">lorem ipsum doler si amet</string>
+    <string name="promo">Promo</string>
+    <string name="semester">Semestre</string>
+    <string name="logtime">NetSoul</string>
+    <string name="current_credit">Crédit :</string>
+    <string name="object_credit">Objectif :</string>
+    <string name="try_again">try again</string>
 </resources>

@@ -16,20 +16,33 @@
         android:id="@+id/project_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="totootototoo"
-        android:gravity="center"
+        android:text="Project name"
+        android:textSize="@dimen/project_title"
+        android:textStyle="bold"
+        android:layout_marginLeft="17dp"
+        android:layout_marginStart="17dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/mark_icon"
-        android:layout_toEndOf="@+id/mark_icon"
-        android:layout_alignBottom="@+id/mark" />
+        android:layout_toEndOf="@+id/mark_icon" />
 
     <TextView
         android:id="@+id/mark"
         android:layout_width="wrap_content"
-        android:text="totootot"
+        android:text="Project mark"
+        android:textSize="@dimen/project_mark"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/project_name"
+        android:layout_alignLeft="@+id/project_name"
+        android:layout_alignStart="@+id/project_name" />
+    
+    <TextView
+        android:id="@+id/rater"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Project rater"
+        android:textSize="@dimen/project_rater"
+        android:layout_below="@+id/mark"
+        android:layout_alignLeft="@+id/project_name"
+        android:layout_alignStart="@+id/project_name" />
 
 </RelativeLayout>
