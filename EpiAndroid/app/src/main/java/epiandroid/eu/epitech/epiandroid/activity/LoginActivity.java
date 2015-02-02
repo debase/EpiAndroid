@@ -7,12 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import epiandroid.eu.epitech.epiandroid.R;
@@ -27,24 +26,26 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     private Button loginButton;
     private boolean isUserLogedIn = false;
     private RelativeLayout loginSpinnerLayout = null;
+    private RelativeLayout errorLayout = null;
+
 
     private JsonHttpResponseHandler epitechServicePostResponseHandler = new JsonHttpResponseHandler() {
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             super.onSuccess(statusCode, headers, response);
-            try {
-                Toast.makeText(LoginActivity.this, "Authantification success token : " + response.getString("token"), Toast.LENGTH_LONG).show();
-                onFinishedAuthenticate(true);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            onFinishedAuthenticate(true);
         }
 
         @Override
         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
             super.onFailure(statusCode, headers, throwable, errorResponse);
-            Toast.makeText(LoginActivity.this, "Authantification failed with error code " + statusCode + errorResponse, Toast.LENGTH_LONG).show();
-            onFinishedAuthenticate(true);
+            onFinishedAuthenticate(false);
+
+            if (isUserLogedIn) {
+                notLogedIn();
+            }
+            loginSpinnerLayout.setVisibility(View.GONE);
+            errorLayout.setVisibility(View.VISIBLE);
         }
     };
 
@@ -70,6 +71,9 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
         setContentView(R.layout.login_spinner);
 
+        TextView textView = (TextView) findViewById(R.id.text_view_spinner_loading);
+        textView.setText(getResources().getString(R.string.loging_you_in));
+        
         loginSpinnerLayout = (RelativeLayout) findViewById(R.id.layout_spinner_loading);
         loginSpinnerLayout.setVisibility(View.VISIBLE);
 
@@ -83,6 +87,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         EpitechService.initialize("http://epitech-api.herokuapp.com/");
 
         loginSpinnerLayout = (RelativeLayout) findViewById(R.id.layout_spinner_loading);
+        errorLayout = (RelativeLayout) findViewById(R.id.layout_spinner_error_login);
 
         this.loginField = (EditText)findViewById(R.id.loginField);
         this.passwordField = (EditText)findViewById(R.id.passwordField);
@@ -99,8 +104,13 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
             if (login.length() == 0 || password.length() == 0)
                 return;
 
+            // error layout and set to gone
+            errorLayout.setVisibility(View.GONE);
+
             // get the layout login spinner and set to visible
             loginSpinnerLayout.setVisibility(View.VISIBLE);
+            TextView textView = (TextView) loginSpinnerLayout.findViewById(R.id.text_view_spinner_loading);
+            textView.setText(getResources().getString(R.string.loging_you_in));
 
             // launch authentication
             EpitechService.authenticate(login, password, epitechServicePostResponseHandler);
@@ -112,6 +122,8 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         loginSpinnerLayout.setVisibility(View.GONE);
 
         if (!isUserLogedIn) {
+            errorLayout.setVisibility(View.GONE);
+
             String login = loginField.getText().toString();
             String password = passwordField.getText().toString();
 
