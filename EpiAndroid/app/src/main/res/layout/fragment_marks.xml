@@ -10,4 +10,5 @@
 
     </ListView>
 
+    <include layout="@layout/loading_spinner"/>
 </FrameLayout>

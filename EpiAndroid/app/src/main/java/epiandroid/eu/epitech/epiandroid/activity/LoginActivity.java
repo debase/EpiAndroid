@@ -69,7 +69,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         // initialize the epitech service url api and token
         EpitechService.initialize("http://epitech-api.herokuapp.com/");
 
-        setContentView(R.layout.login_spinner);
+        setContentView(R.layout.loading_spinner);
 
         TextView textView = (TextView) findViewById(R.id.text_view_spinner_loading);
         textView.setText(getResources().getString(R.string.loging_you_in));

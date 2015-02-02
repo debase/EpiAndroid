@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +62,11 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
         public void onSuccess(InfoModel infoItem) {
             mInfoModel = infoItem;
             setUpInfoNav(infoItem);
+        }
+
+        @Override
+        public void onFailure(Throwable throwable, JSONObject errorResponse) {
+
         }
     };
 

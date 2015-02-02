@@ -1,7 +1,7 @@
 package epiandroid.eu.epitech.epiandroid.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,17 +26,26 @@ import epiandroid.eu.epitech.epiandroid.model.MarkModel;
 import epiandroid.eu.epitech.epiandroid.model.MarksItem;
 
 
-public class MarksFragment extends Fragment {
+public class MarksFragment extends LoadingFragment {
 
     private View view;
+    private ListView mMarkListView;
 
     private GsonResponseHandler<MarkModel> gsonResponseHandler = new GsonResponseHandler<MarkModel>(MarkModel.class) {
 
         @Override
         public void onSuccess(MarkModel markModel) {
-            MarksViewAdapter adapter = new MarksViewAdapter(getActivity(), R.layout.mark_item, new ArrayList<MarksItem>(Arrays.asList(markModel.getMarksItem())));
-            ListView listView = (ListView) view.findViewById(R.id.mark_list);
-            listView.setAdapter(adapter);
+            showLoading(false, null);
+            showbaseView(true);
+
+            MarksViewAdapter adapter = new MarksViewAdapter(getActivity(), R.layout.mark_item, new ArrayList<>(Arrays.asList(markModel.getMarksItem())));
+            mMarkListView.setAdapter(adapter);
+        }
+
+        @Override
+        public void onFailure(Throwable throwable, JSONObject errorResponse) {
+            showLoading(false, null);
+            showError(true, getResources().getString(R.string.error_fetching_data));
         }
     };
 
@@ -62,21 +71,37 @@ public class MarksFragment extends Fragment {
     };
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        EpitechService.getRequest("marks", null, gsonResponseHandler);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_marks, container, false);
         return view;
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mMarkListView = (ListView) view.findViewById(R.id.mark_list);
+        setLoadingView(mMarkListView, view.findViewById(R.id.layout_spinner_loading), view.findViewById(R.id.layout_spinner_error));
+        view.findViewById(R.id.button_error).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showError(false, null);
+                load();
+            }
+        });
+        load();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         view = null;
+    }
+
+    @Override
+    public void load() {
+        showbaseView(false);
+        showLoading(true, getResources().getString(R.string.loading_data));
+        EpitechService.getRequest("marks", null, gsonResponseHandler);
     }
 }

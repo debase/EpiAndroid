@@ -18,7 +18,6 @@ import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCal
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.Header;
 import org.json.JSONObject;
 
 import epiandroid.eu.epitech.epiandroid.CircleTransform;
@@ -67,8 +66,7 @@ public class DashboardFragment extends LoadingFragment implements ObservableScro
         }
 
         @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            super.onFailure(statusCode, headers, throwable, errorResponse);
+        public void onFailure(Throwable throwable, JSONObject errorResponse) {
             showLoading(false, null);
             showError(true, getResources().getString(R.string.error_fetching_data));
         }
