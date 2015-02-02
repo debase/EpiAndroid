@@ -35,7 +35,6 @@ import epiandroid.eu.epitech.epiandroid.fragment.MarksFragment;
 import epiandroid.eu.epitech.epiandroid.fragment.PlanningFragment;
 import epiandroid.eu.epitech.epiandroid.model.InfoModel;
 import epiandroid.eu.epitech.epiandroid.preference.UserPreferenceHelper;
-import epiandroid.eu.epitech.epiandroid.utils.Utils;
 
 /**
  * Created by debas on 20/01/15.
@@ -237,7 +236,6 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
                     public void onClick(DialogInterface dialog, int which) {
 
                         //Stop the activity
-                        Utils.makeText(HomeActivity.this, "Logout !");
                         UserPreferenceHelper.logout(HomeActivity.this);
                         HomeActivity.this.finish();
                     }

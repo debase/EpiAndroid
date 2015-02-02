@@ -58,4 +58,7 @@
     <string name="enter_token">Enter your token</string>
     <string name="validate">Validate</string>
     <string name="cancel">Cancel</string>
+    <string name="loading_data">Chargement des données ...</string>
+    <string name="error_fetching_data">Impossible de récuperer les données</string>
+    <string name="login_error">Can\'t log you in</string>
 </resources>

@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,29 +18,26 @@ import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCal
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.squareup.picasso.Picasso;
 
+import org.apache.http.Header;
+import org.json.JSONObject;
+
 import epiandroid.eu.epitech.epiandroid.CircleTransform;
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
 import epiandroid.eu.epitech.epiandroid.epitech_service.GsonResponseHandler;
 import epiandroid.eu.epitech.epiandroid.model.InfoModel;
-import epiandroid.eu.epitech.epiandroid.model.MessageModel;
-import epiandroid.eu.epitech.epiandroid.utils.Utils;
 
 /**
  * Created by debas on 28/01/15.
  */
-public class DashboardFragment extends Fragment implements ObservableScrollViewCallbacks {
+public class DashboardFragment extends LoadingFragment implements ObservableScrollViewCallbacks {
     private LinearLayout mLinearLayout = null;
     private Activity mActivity = null;
     private ImageView mImageView = null;
     private float mParallaxImageHeight = 0;
     private ImageView mUserImageView = null;
     private TextView mUserTitle, mUserMail, mUserPromo, mUserSemester, mUserCurrentCredit, mUserObjectifCredit, mUserNetSoul;
-    private GsonResponseHandler<MessageModel[]> gsonResponseHandlerMessage = new GsonResponseHandler<MessageModel[]>(MessageModel[].class) {
-        @Override
-        public void onSuccess(MessageModel[] messageModel) {
-        }
-    };
+
     private GsonResponseHandler<InfoModel> gsonResponseHandlerInfos = new GsonResponseHandler<InfoModel>(InfoModel.class) {
         @Override
         public void onSuccess(InfoModel infoModel) {
@@ -64,7 +61,16 @@ public class DashboardFragment extends Fragment implements ObservableScrollViewC
                 mUserCurrentCredit.setText(infoModel.infoCurrent.current_credit);
                 mUserObjectifCredit.setText(infoModel.infoCurrent.objectif_credit);
                 mUserNetSoul.setText(infoModel.infoCurrent.active_log);
+                showLoading(false, null);
+                showbaseView(true);
             }
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+            super.onFailure(statusCode, headers, throwable, errorResponse);
+            showLoading(false, null);
+            showError(true, getResources().getString(R.string.error_fetching_data));
         }
     };
 
@@ -111,16 +117,12 @@ public class DashboardFragment extends Fragment implements ObservableScrollViewC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        if (savedInstanceState == null) {
-            Utils.makeText(getActivity(), "OnCreate");
-            EpitechService.getRequest("infos", null, gsonResponseHandlerInfos);
-            EpitechService.getRequest("messages", null, gsonResponseHandlerMessage);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dashboard, container, false);
+        View view = inflater.inflate(R.layout.dashboard, container, false);
+        return view;
     }
 
     @Override
@@ -141,6 +143,19 @@ public class DashboardFragment extends Fragment implements ObservableScrollViewC
         mUserNetSoul = (TextView) view.findViewById(R.id.current_netsoul);
 
         mObservableScrollView.setScrollViewCallbacks(this);
+
+        Button buttonError = (Button) view.findViewById(R.id.button_error);
+        buttonError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showError(false, null);
+                load();
+            }
+        });
+
+        setLoadingView(view.findViewById(R.id.scroll_view_dashboard),
+                view.findViewById(R.id.layout_spinner_loading), view.findViewById(R.id.layout_spinner_error));
+        load();
     }
 
     @Override
@@ -156,5 +171,14 @@ public class DashboardFragment extends Fragment implements ObservableScrollViewC
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
 
+    }
+
+    @Override
+    public void load() {
+        showbaseView(false);
+        showLoading(true, getResources().getString(R.string.loading_data));
+
+//        EpitechService.getRequest("messages", null, jsonHttpResponseHandler);
+        EpitechService.getRequest("infos", null, gsonResponseHandlerInfos);
     }
 }
