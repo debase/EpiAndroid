@@ -55,4 +55,7 @@
     <string name="current_credit">Crédit :</string>
     <string name="object_credit">Objectif :</string>
     <string name="try_again">try again</string>
+    <string name="enter_token">Enter your token</string>
+    <string name="validate">Validate</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -21,10 +21,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.adapter.PlanningAdapter;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
+import epiandroid.eu.epitech.epiandroid.epitech_service.GsonResponseHandler;
 import epiandroid.eu.epitech.epiandroid.model.PlanningItem;
 
 public class PlanningFragment extends Fragment implements View.OnClickListener {
@@ -37,37 +39,25 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
     private String[] monthsNb = new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
     private String[] months;
 
-    private JsonHttpResponseHandler mEpitechServiceGetResponseHandler = new JsonHttpResponseHandler() {
-
+    private GsonResponseHandler<PlanningItem[]> gsonResponseHandler = new GsonResponseHandler<PlanningItem[]>(PlanningItem[].class) {
         @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-            super.onSuccess(statusCode, headers, response);
-            Log.i("Planning", "=========================> Planning received");
+        public void onSuccess(PlanningItem[] planningItems) {
             ArrayList<PlanningItem> contentList = new ArrayList<>();
             listAdapter = new PlanningAdapter(getActivity(), R.layout.adapter_planning, contentList);
 
-            for (int i = 0 ; i < response.length() ; i++) {
-                String title = null;
-                String registered = null;
-                String start = null;
-                String end = null;
-                try {
-                    title = response.getJSONObject(i).getString("acti_title");
-                    registered = response.getJSONObject(i).getString("event_registered");
-                    start = response.getJSONObject(i).getString("start");
-                    end = response.getJSONObject(i).getString("end");
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            if (planningItems != null) {
+                for (PlanningItem planningItem : planningItems) {
+                    if (planningItem.getRegistered() != null && planningItem.getRegistered().equals("registered")) {
+                        listAdapter.add(planningItem);
+                    }
                 }
-                if (registered != null && registered.equals("registered")) {
-                    PlanningItem planningItem = new PlanningItem();
-                    planningItem.setTitle(title);
-                    planningItem.setSchedule(start, end);
-                    listAdapter.add(planningItem);
+                planningList.setAdapter(listAdapter);
+            } else {
+                if (listAdapter != null) {
+                    listAdapter.clear();
+                    planningList.setAdapter(listAdapter);
                 }
             }
-
-            planningList.setAdapter(listAdapter);
         }
 
         @Override
@@ -101,7 +91,7 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
         String dateStr = dateCal.get(Calendar.YEAR) + "-" + monthsNb[dateCal.get(Calendar.MONTH)] + "-" + dateCal.get(Calendar.DAY_OF_MONTH);
         params.put("start", dateStr);
         params.put("end", dateStr);
-        EpitechService.getRequest("planning", params, mEpitechServiceGetResponseHandler);
+        EpitechService.getRequest("planning", params, gsonResponseHandler);
     }
 
     @Override
@@ -143,6 +133,6 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
             listAdapter.clear();
             planningList.setAdapter(listAdapter);
         }
-        EpitechService.getRequest("planning", params, mEpitechServiceGetResponseHandler);
+        EpitechService.getRequest("planning", params, gsonResponseHandler);
     }
 }

@@ -1,5 +1,7 @@
 package epiandroid.eu.epitech.epiandroid.epitech_service;
 
+import android.util.Log;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -30,6 +32,7 @@ public class EpitechService {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     mToken = response.getString("token");
+                    Log.i("Token", "===========================>  " + mToken);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

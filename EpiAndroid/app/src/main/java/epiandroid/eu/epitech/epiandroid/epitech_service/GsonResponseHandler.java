@@ -1,6 +1,7 @@
 package epiandroid.eu.epitech.epiandroid.epitech_service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -35,7 +36,11 @@ public abstract class GsonResponseHandler<Model> extends JsonHttpResponseHandler
     private Model getModelFromJson(String json) {
         Gson gson = new Gson();
 
-        return gson.fromJson(json, type);
+        try {
+            return gson.fromJson(json, type);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public abstract void onSuccess(Model model);
