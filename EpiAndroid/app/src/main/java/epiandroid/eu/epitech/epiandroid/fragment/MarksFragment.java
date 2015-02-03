@@ -3,8 +3,6 @@ package epiandroid.eu.epitech.epiandroid.fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,15 +30,16 @@ public class MarksFragment extends LoadingFragment {
     private View view;
     private ListView mMarkListView;
     private Activity mActivity = null;
-    private MarksViewAdapter adapter;
+    private String mCurrentSearch = null;
+    private MarksViewAdapter mMarksViewAdapter = null;
 
     private GsonResponseHandler<MarkModel> gsonResponseHandler = new GsonResponseHandler<MarkModel>(MarkModel.class) {
 
         @Override
         public void onSuccess(MarkModel markModel) {
-            adapter = new MarksViewAdapter(getActivity(), R.layout.mark_item, new ArrayList<MarksItem>(Arrays.asList(markModel.getMarksItem())));
+            mMarksViewAdapter = new MarksViewAdapter(getActivity(), R.layout.mark_item, new ArrayList<MarksItem>(Arrays.asList(markModel.getMarksItem())));
             ListView listView = (ListView) view.findViewById(R.id.mark_list);
-            listView.setAdapter(adapter);
+            listView.setAdapter(mMarksViewAdapter);
             showLoading(false, null);
             showbaseView(true);
         }
@@ -86,6 +85,7 @@ public class MarksFragment extends LoadingFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_marks, container, false);
+        setHasOptionsMenu(true);
         return view;
     }
 
@@ -93,13 +93,19 @@ public class MarksFragment extends LoadingFragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                adapter.filter(query);
+                mCurrentSearch = query;
+                if (mMarksViewAdapter != null) {
+                    mMarksViewAdapter.filter(mCurrentSearch);
+                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.filter(newText);
+                mCurrentSearch = newText;
+                if (mMarksViewAdapter != null) {
+                    mMarksViewAdapter.filter(mCurrentSearch);
+                }
                 return false;
             }
         });
@@ -134,8 +140,4 @@ public class MarksFragment extends LoadingFragment {
         EpitechService.getRequest("marks", null, gsonResponseHandler);
     }
 
-    private void deleteCustomViewFromActionBar() {
-        ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
-        actionBar.setCustomView(null);
-    }
 }
