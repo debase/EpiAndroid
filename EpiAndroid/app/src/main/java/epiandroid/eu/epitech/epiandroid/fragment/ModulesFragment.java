@@ -9,11 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.apache.http.Header;
+import org.json.JSONObject;
+
+import java.util.Arrays;
+import java.util.Comparator;
 
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.adapter.ModuleAdapter;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
 import epiandroid.eu.epitech.epiandroid.epitech_service.GsonResponseHandler;
+import epiandroid.eu.epitech.epiandroid.model.ModuleItem;
 import epiandroid.eu.epitech.epiandroid.model.ModulesModel;
 
 
@@ -25,9 +30,26 @@ public class ModulesFragment extends Fragment {
     private GsonResponseHandler<ModulesModel> gsonResponseHandler = new GsonResponseHandler<ModulesModel>(ModulesModel.class) {
         @Override
         public void onSuccess(ModulesModel modulesModel) {
-            Log.i("Modules", modulesModel.getModuleItem().toString());
-            listAdapter = new ModuleAdapter(getActivity(), R.layout.fragment_modules, modulesModel.getModuleItem());
+
+            ModuleItem[] items = modulesModel.getModuleItem();
+
+            Arrays.sort(items, new Comparator<ModuleItem>() {
+                @Override
+                public int compare(ModuleItem lhs, ModuleItem rhs) {
+                    Integer yearA = Integer.parseInt(lhs.getScolaryear());
+                    Integer yearB = Integer.parseInt(rhs.getScolaryear());
+
+                    return yearB.compareTo(yearA);
+                }
+            });
+
+            listAdapter = new ModuleAdapter(getActivity(), R.layout.adapter_module, items);
             modulesList.setAdapter(listAdapter);
+        }
+
+        @Override
+        public void onFailure(Throwable throwable, JSONObject errorResponse) {
+
         }
 
         @Override

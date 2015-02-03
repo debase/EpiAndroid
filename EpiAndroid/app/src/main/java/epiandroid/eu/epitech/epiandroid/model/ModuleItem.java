@@ -13,6 +13,15 @@ public class ModuleItem {
     @SerializedName("grade")
     private String grade;
 
+    @SerializedName("scolaryear")
+    private String scolaryear;
+
+    @SerializedName("date_ins")
+    private String dateSubscribed;
+
+    @SerializedName("credits")
+    private String credits;
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -27,5 +36,29 @@ public class ModuleItem {
 
     public String getGrade() {
         return this.grade;
+    }
+
+    public void setScolaryear(String scolaryear) {
+        this.scolaryear = scolaryear;
+    }
+
+    public String getScolaryear() {
+        return this.scolaryear;
+    }
+
+    public void setDateSubscribed(String dateSubscribed) {
+        this.dateSubscribed = dateSubscribed;
+    }
+
+    public String getDateSubscribed() {
+        return this.dateSubscribed;
+    }
+
+    public void setCredits(String credits) {
+        this.credits = credits;
+    }
+
+    public String getCredits() {
+        return this.credits;
     }
 }

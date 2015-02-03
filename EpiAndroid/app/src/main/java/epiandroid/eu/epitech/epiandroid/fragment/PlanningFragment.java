@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,7 +22,6 @@ import epiandroid.eu.epitech.epiandroid.adapter.PlanningAdapter;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
 import epiandroid.eu.epitech.epiandroid.epitech_service.GsonResponseHandler;
 import epiandroid.eu.epitech.epiandroid.model.PlanningItem;
-import epiandroid.eu.epitech.epiandroid.utils.Utils;
 
 public class PlanningFragment extends LoadingFragment implements View.OnClickListener {
 

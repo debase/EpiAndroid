@@ -113,7 +113,7 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
         mNavigationArray.add(builSectionView(R.drawable.home, R.string.dashboard));
         mNavigationArray.add(builSectionView(R.drawable.marks, R.string.marks));
         mNavigationArray.add(builSectionView(R.drawable.calendar, R.string.calendar));
-        mNavigationArray.add(builSectionView(R.drawable.calendar, R.string.navdrawer_modules));
+        mNavigationArray.add(builSectionView(R.drawable.modules, R.string.navdrawer_modules));
 
         navigationDrawerAdapter = new EpiAndroidNavigationAdapter(mNavigationArray);
         listDrawer.setAdapter(navigationDrawerAdapter);

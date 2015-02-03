@@ -8,6 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.model.ModuleItem;
 import epiandroid.eu.epitech.epiandroid.model.PlanningItem;
@@ -36,9 +43,24 @@ public class ModuleAdapter extends ArrayAdapter<ModuleItem> {
 
         ModuleItem moduleItem = getItem(position);
 
+        String[] months = new String[] {getContext().getResources().getString(R.string.january),
+                getContext().getResources().getString(R.string.february),
+                getContext().getResources().getString(R.string.march),
+                getContext().getResources().getString(R.string.april),
+                getContext().getResources().getString(R.string.may),
+                getContext().getResources().getString(R.string.june),
+                getContext().getResources().getString(R.string.july),
+                getContext().getResources().getString(R.string.august),
+                getContext().getResources().getString(R.string.september),
+                getContext().getResources().getString(R.string.october),
+                getContext().getResources().getString(R.string.november),
+                getContext().getResources().getString(R.string.december)};
+
         if (moduleItem != null) {
             TextView titleLabel = (TextView) v.findViewById(R.id.adapterModuleTitle);
             TextView gradeLabel = (TextView) v.findViewById(R.id.adapterModuleGrade);
+            TextView dateLabel = (TextView) v.findViewById(R.id.adapterModuleDateSubscribed);
+            TextView credits = (TextView) v.findViewById(R.id.adapterModuleCredits);
 
             if (titleLabel != null) {
                 titleLabel.setText(moduleItem.getTitle());
@@ -46,6 +68,23 @@ public class ModuleAdapter extends ArrayAdapter<ModuleItem> {
 
             if (gradeLabel != null) {
                 gradeLabel.setText(moduleItem.getGrade());
+            }
+
+            if (dateLabel != null) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date;
+                try {
+                    date = format.parse(moduleItem.getDateSubscribed());
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(date);
+                    dateLabel.setText(cal.get(Calendar.DAY_OF_MONTH) + " " + months[cal.get(Calendar.MONTH)] + " " + cal.get(Calendar.YEAR));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (credits != null) {
+                credits.setText(moduleItem.getCredits());
             }
         }
 

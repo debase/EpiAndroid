@@ -2,21 +2,74 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
+        android:text="@string/lorem_ipsum"
         android:textSize="20sp"
-        android:id="@+id/adapterModuleTitle" />
+        android:textStyle="bold"
+        android:id="@+id/adapterModuleTitle"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/adapterModuleGrade"
+        android:layout_toStartOf="@+id/adapterModuleGrade"
+        android:layout_marginTop="20dp"/>
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
-        android:layout_alignLeft="@+id/adapterModuleTitle"
-        android:textSize="20sp"
-        android:id="@+id/adapterModuleGrade" />
+        android:text="@string/subscribed_since"
+        android:textSize="15sp"
+        android:layout_marginRight="5dp"
+        android:id="@+id/adapterModuleDateSubscribedLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/adapterModuleTitle"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lorem_ipsum"
+        android:textSize="15sp"
+        android:id="@+id/adapterModuleDateSubscribed"
+        android:layout_alignTop="@+id/adapterModuleDateSubscribedLabel"
+        android:layout_toEndOf="@+id/adapterModuleDateSubscribedLabel"
+        android:layout_toRightOf="@+id/adapterModuleDateSubscribedLabel" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/current_credit"
+        android:textSize="15sp"
+        android:id="@+id/adapterModuleCreditsLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/adapterModuleDateSubscribed"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:id="@+id/adapterModuleCredits"
+        android:layout_below="@+id/adapterModuleDateSubscribed"
+        android:layout_toLeftOf="@+id/adapterModuleGrade"
+        android:layout_alignBottom="@+id/adapterModuleCreditsLabel"
+        android:layout_toEndOf="@+id/adapterModuleCreditsLabel"
+        android:layout_toRightOf="@+id/adapterModuleCreditsLabel" />
+
+    <TextView
+        android:layout_width="100dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:text="A"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:textSize="25sp"
+        android:id="@+id/adapterModuleGrade"/>
 </RelativeLayout>

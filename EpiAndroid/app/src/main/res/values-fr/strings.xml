@@ -33,4 +33,6 @@
     <string name="token_success">Token validé</string>
     <string name="no_event">Aucun évènement</string>
     <string name="navdrawer_modules">Modules</string>
+    <string name="current_credit">Crédits :</string>
+    <string name="subscribed_since">Inscrit depuis le </string>
 </resources>
