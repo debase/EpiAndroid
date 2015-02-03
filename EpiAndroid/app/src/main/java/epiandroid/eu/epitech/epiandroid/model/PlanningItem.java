@@ -1,6 +1,9 @@
 package epiandroid.eu.epitech.epiandroid.model;
 
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
+
+import org.json.JSONObject;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -37,6 +40,9 @@ public class PlanningItem {
 
     @SerializedName("codeevent")
     private String codeevent;
+
+    @SerializedName("room")
+    private RoomItem room;
 
     public void setTitle(String title) {
         this.title = title;
@@ -108,6 +114,14 @@ public class PlanningItem {
 
     public String getCodeevent() {
         return this.codeevent;
+    }
+
+    public void setRoom(RoomItem room) {
+        this.room = room;
+    }
+
+    public RoomItem getRoom() {
+        return this.room;
     }
 
     public String getSchedule() {

@@ -12,11 +12,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -28,6 +31,7 @@ import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
 import epiandroid.eu.epitech.epiandroid.epitech_service.GsonResponseHandler;
 import epiandroid.eu.epitech.epiandroid.model.PlanningItem;
+import epiandroid.eu.epitech.epiandroid.utils.Utils;
 
 /**
  * Created by remihillairet on 28/01/15.
@@ -41,7 +45,14 @@ public class PlanningAdapter extends ArrayAdapter<PlanningItem> implements View.
         @Override
         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
             super.onSuccess(statusCode, headers, response);
-            Log.i("Token Validation Success", response.toString());
+
+            try {
+                String error = response.getString("error");
+                Utils.makeText(getContext(), getContext().getResources().getString(R.string.token_error));
+            } catch (JSONException e) {
+                Utils.makeText(getContext(), getContext().getResources().getString(R.string.token_success));
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -71,6 +82,7 @@ public class PlanningAdapter extends ArrayAdapter<PlanningItem> implements View.
         if (planningItem != null) {
             TextView titleLabel = (TextView) v.findViewById(R.id.adapterPlanningTitle);
             TextView scheduleLabel = (TextView) v.findViewById(R.id.adapterPlanningSchedule);
+            TextView roomLabel = (TextView) v.findViewById(R.id.adapterPlanningRoom);
             Button btnToken = (Button) v.findViewById(R.id.btnToken);
 
             if (titleLabel != null) {
@@ -79,6 +91,12 @@ public class PlanningAdapter extends ArrayAdapter<PlanningItem> implements View.
 
             if (scheduleLabel != null) {
                 scheduleLabel.setText(planningItem.getSchedule());
+            }
+
+            if (roomLabel != null) {
+                String roomName = planningItem.getRoom().getCode();
+                roomName = roomName.substring(roomName.lastIndexOf("/") + 1);
+                roomLabel.setText(roomName);
             }
 
             if (btnToken != null) {

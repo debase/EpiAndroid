@@ -18,9 +18,18 @@
         android:layout_below="@+id/adapterPlanningTitle"
         android:layout_marginLeft="20dp"
         android:layout_marginStart="20dp"
-        android:layout_marginBottom="10dp"
         android:textSize="16sp"
         android:id="@+id/adapterPlanningSchedule" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/adapterPlanningSchedule"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="16sp"
+        android:id="@+id/adapterPlanningRoom" />
 
     <Button
         android:layout_width="wrap_content"

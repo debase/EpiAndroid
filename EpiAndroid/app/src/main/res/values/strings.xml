@@ -18,6 +18,7 @@
     <string name="navdrawer_email">email</string>
     <string name="marks">Marks</string>
     <string name="navdrawer_planning">Planning</string>
+    <string name="navdrawer_modules">Modules</string>
     <string name="dashboard">Dashboard</string>
 
 
@@ -61,4 +62,7 @@
     <string name="loading_data">Chargement des données ...</string>
     <string name="error_fetching_data">Impossible de récuperer les données</string>
     <string name="login_error">Can\'t log you in</string>
+    <string name="token_error">You can\'t enter your token for this session or your token is invalid</string>
+    <string name="token_success">Token validated</string>
+    <string name="no_event">No event</string>
 </resources>

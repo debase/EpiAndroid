@@ -32,6 +32,7 @@ import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
 import epiandroid.eu.epitech.epiandroid.epitech_service.GsonResponseHandler;
 import epiandroid.eu.epitech.epiandroid.fragment.DashboardFragment;
 import epiandroid.eu.epitech.epiandroid.fragment.MarksFragment;
+import epiandroid.eu.epitech.epiandroid.fragment.ModulesFragment;
 import epiandroid.eu.epitech.epiandroid.fragment.PlanningFragment;
 import epiandroid.eu.epitech.epiandroid.model.InfoModel;
 import epiandroid.eu.epitech.epiandroid.preference.UserPreferenceHelper;
@@ -105,6 +106,7 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
         mNavigationArray.add(builSectionView(R.drawable.home, R.string.dashboard));
         mNavigationArray.add(builSectionView(R.drawable.marks, R.string.marks));
         mNavigationArray.add(builSectionView(R.drawable.calendar, R.string.calendar));
+        mNavigationArray.add(builSectionView(R.drawable.calendar, R.string.navdrawer_modules));
 
         navigationDrawerAdapter = new EpiAndroidNavigationAdapter(mNavigationArray);
         listDrawer.setAdapter(navigationDrawerAdapter);
@@ -216,6 +218,10 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
             case 2:
                 fragment = new PlanningFragment();
                 toolbar.setTitle(getResources().getString(R.string.navdrawer_planning));
+                break;
+            case 3:
+                fragment = new ModulesFragment();
+                toolbar.setTitle(getResources().getString(R.string.navdrawer_modules));
                 break;
         }
         if (fragment != null) {

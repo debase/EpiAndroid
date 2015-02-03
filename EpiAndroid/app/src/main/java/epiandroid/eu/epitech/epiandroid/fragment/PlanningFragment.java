@@ -17,6 +17,7 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,11 +29,13 @@ import epiandroid.eu.epitech.epiandroid.adapter.PlanningAdapter;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
 import epiandroid.eu.epitech.epiandroid.epitech_service.GsonResponseHandler;
 import epiandroid.eu.epitech.epiandroid.model.PlanningItem;
+import epiandroid.eu.epitech.epiandroid.utils.Utils;
 
 public class PlanningFragment extends Fragment implements View.OnClickListener {
 
     private ListView planningList;
     private TextView dateLabel;
+    private TextView noEventLabel;
     private Calendar dateCal = Calendar.getInstance();
     private PlanningAdapter listAdapter;
     private Date currentDate = new Date();
@@ -51,12 +54,14 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
                         listAdapter.add(planningItem);
                     }
                 }
+                if (listAdapter.getCount() == 0) {
+                    noEventLabel.setVisibility(View.VISIBLE);
+                }
                 planningList.setAdapter(listAdapter);
             } else {
-                if (listAdapter != null) {
-                    listAdapter.clear();
-                    planningList.setAdapter(listAdapter);
-                }
+                noEventLabel.setVisibility(View.VISIBLE);
+                listAdapter.clear();
+                planningList.setAdapter(listAdapter);
             }
         }
 
@@ -101,6 +106,8 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
         View V = inflater.inflate(R.layout.fragment_planning, container, false);
         this.planningList = (ListView) V.findViewById(R.id.planningList);
         this.dateLabel = (TextView) V.findViewById(R.id.planningDate);
+        this.noEventLabel = (TextView) V.findViewById(R.id.planningNoEvent);
+        this.noEventLabel.setVisibility(View.GONE);
         ImageButton prevBtn = (ImageButton) V.findViewById(R.id.btnPrevDay);
         ImageButton nextBtn = (ImageButton) V.findViewById(R.id.btnNextDay);
         prevBtn.setOnClickListener(this);
@@ -133,6 +140,7 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
             listAdapter.clear();
             planningList.setAdapter(listAdapter);
         }
+        this.noEventLabel.setVisibility(View.GONE);
         EpitechService.getRequest("planning", params, gsonResponseHandler);
     }
 }

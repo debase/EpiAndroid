@@ -29,4 +29,8 @@
     <string name="enter_token">Entrer votre token</string>
     <string name="validate">Valider</string>
     <string name="cancel">Annuler</string>
+    <string name="token_error">Vous ne pouvez pas rentrer de token pour cette session ou votre token est invalide</string>
+    <string name="token_success">Token validé</string>
+    <string name="no_event">Aucun évènement</string>
+    <string name="navdrawer_modules">Modules</string>
 </resources>
