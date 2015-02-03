@@ -1,48 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/mark_item_layout">
-
-    <ImageView
-        android:id="@+id/mark_icon"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher" />
 
     <TextView
         android:id="@+id/project_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Project name"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:singleLine="true"
         android:textSize="@dimen/project_title"
         android:textStyle="bold"
-        android:layout_marginLeft="17dp"
-        android:layout_marginStart="17dp"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/mark_icon"
-        android:layout_toEndOf="@+id/mark_icon" />
+        android:layout_toLeftOf="@+id/mark"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-    <TextView
-        android:id="@+id/mark"
-        android:layout_width="wrap_content"
-        android:text="Project mark"
-        android:textSize="@dimen/project_mark"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/project_name"
-        android:layout_alignLeft="@+id/project_name"
-        android:layout_alignStart="@+id/project_name" />
-    
     <TextView
         android:id="@+id/rater"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Project rater"
+        android:layout_marginLeft="5dp"
         android:textSize="@dimen/project_rater"
-        android:layout_below="@+id/mark"
-        android:layout_alignLeft="@+id/project_name"
-        android:layout_alignStart="@+id/project_name" />
+        android:textStyle="italic"
+        android:layout_below="@+id/project_name"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignRight="@+id/project_name"
+        android:layout_alignEnd="@+id/project_name"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/mark"
+        android:layout_width="80dp"
+        android:textSize="@dimen/project_mark"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/rater"
+        android:layout_alignTop="@+id/project_name"
+        android:layout_marginRight="7dp"
+        android:layout_marginLeft="7dp"/>
 
 </RelativeLayout>

@@ -18,64 +18,86 @@ import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCal
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.Header;
 import org.json.JSONObject;
 
 import epiandroid.eu.epitech.epiandroid.CircleTransform;
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
 import epiandroid.eu.epitech.epiandroid.epitech_service.GsonResponseHandler;
+import epiandroid.eu.epitech.epiandroid.model.HistoryItem;
 import epiandroid.eu.epitech.epiandroid.model.InfoModel;
 
 /**
  * Created by debas on 28/01/15.
  */
 public class DashboardFragment extends LoadingFragment implements ObservableScrollViewCallbacks {
-    private LinearLayout mLinearLayout = null;
+    private LinearLayout mLinearLayoutHistory = null;
+    private LinearLayout mLinearLayoutMessages = null;
     private Activity mActivity = null;
     private ImageView mImageView = null;
-    private float mParallaxImageHeight = 0;
     private ImageView mUserImageView = null;
     private TextView mUserTitle, mUserMail, mUserPromo, mUserSemester, mUserCurrentCredit, mUserObjectifCredit, mUserNetSoul;
 
     private GsonResponseHandler<InfoModel> gsonResponseHandlerInfos = new GsonResponseHandler<InfoModel>(InfoModel.class) {
         @Override
         public void onSuccess(InfoModel infoModel) {
-            for (int i = 0; i < infoModel.history.length && i < 4; i++) {
-                InfoModel.HistoryItem hi = infoModel.history[i];
-                if (mActivity != null) {
-                    addHistoryToList(mActivity.getApplicationContext(), hi);
-                }
-            }
-            if (mActivity != null) {
-                String urlProfilPicture = "https://cdn.local.epitech.eu/userprofil/profilview/" + infoModel.infos.login + ".jpg";
-                Picasso.with(mActivity)
-                        .load(urlProfilPicture)
-                        .transform(new CircleTransform())
-                        .error(R.drawable.person_image_empty)
-                        .into(mUserImageView);
-                mUserTitle.setText(infoModel.infos.title);
-                mUserMail.setText(infoModel.infos.mail);
-                mUserPromo.setText(infoModel.infos.promo);
-                mUserSemester.setText(infoModel.infoCurrent.user_semester);
-                mUserCurrentCredit.setText(infoModel.infoCurrent.current_credit);
-                mUserObjectifCredit.setText(infoModel.infoCurrent.objectif_credit);
-                mUserNetSoul.setText(infoModel.infoCurrent.active_log);
-                showLoading(false, null);
-                showbaseView(true);
-            }
+            if (mActivity == null)
+                return;
+
+            String urlProfilPicture = "https://cdn.local.epitech.eu/userprofil/profilview/" + infoModel.infos.login + ".jpg";
+
+            Picasso.with(mActivity)
+                    .load(urlProfilPicture)
+                    .transform(new CircleTransform())
+                    .error(R.drawable.person_image_empty)
+                    .into(mUserImageView);
+
+            mUserTitle.setText(infoModel.infos.title);
+            mUserMail.setText(infoModel.infos.mail);
+            mUserPromo.setText(infoModel.infos.promo);
+            mUserSemester.setText(infoModel.infoCurrent.user_semester);
+            mUserCurrentCredit.setText(infoModel.infoCurrent.current_credit);
+            mUserObjectifCredit.setText(infoModel.infoCurrent.objectif_credit);
+            mUserNetSoul.setText(infoModel.infoCurrent.active_log);
+
+            showLoading(false, null);
+            showbaseView(true);
         }
 
         @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            super.onFailure(statusCode, headers, throwable, errorResponse);
+        public void onFailure(Throwable throwable, JSONObject errorResponse) {
+            if (mActivity == null)
+                return;
+
             showLoading(false, null);
             showError(true, getResources().getString(R.string.error_fetching_data));
         }
     };
 
-    private void addHistoryToList(Context applicationContext, InfoModel.HistoryItem history) {
-        View v = LayoutInflater.from(applicationContext).inflate(R.layout.history_card, mLinearLayout, false);
+    private GsonResponseHandler<HistoryItem[]> gsonResponseHandlerMessages = new GsonResponseHandler<HistoryItem[]>(HistoryItem[].class) {
+
+        @Override
+        public void onSuccess(HistoryItem[] historyItem) {
+            if (mActivity == null)
+                return;
+
+            for (int i = 0; i < historyItem.length && i < 4; i++) {
+                addHistoryToList(mActivity, mLinearLayoutMessages, historyItem[i]);
+            }
+        }
+
+        @Override
+        public void onFailure(Throwable throwable, JSONObject errorResponse) {
+            if (mActivity == null)
+                return;
+
+            showLoading(false, null);
+            showError(true, getResources().getString(R.string.error_fetching_data));
+        }
+    };
+
+    private void addHistoryToList(Context applicationContext, LinearLayout layout, HistoryItem history) {
+        View v = LayoutInflater.from(applicationContext).inflate(R.layout.history_card, mLinearLayoutHistory, false);
 
         TextView title = (TextView) v.findViewById(R.id.title);
         TextView  content = (TextView) v.findViewById(R.id.content);
@@ -98,7 +120,7 @@ public class DashboardFragment extends LoadingFragment implements ObservableScro
         } else {
             imageView.setVisibility(View.GONE);
         }
-        mLinearLayout.addView(v);
+        layout.addView(v);
     }
 
     @Override
@@ -128,9 +150,10 @@ public class DashboardFragment extends LoadingFragment implements ObservableScro
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         ObservableScrollView mObservableScrollView = (ObservableScrollView) view.findViewById(R.id.scroll_view_dashboard);
-        mLinearLayout = (LinearLayout) view.findViewById(R.id.history_linear_layout);
-        mParallaxImageHeight = getResources().getDimension(R.dimen.header_view_dashboard_height);
+
+        mLinearLayoutMessages = (LinearLayout) view.findViewById(R.id.messages_linear_layout);
         mImageView = (ImageView) view.findViewById(R.id.epitech_image);
         mUserImageView = (ImageView) view.findViewById(R.id.header_imageview_dashboard);
 
@@ -180,5 +203,6 @@ public class DashboardFragment extends LoadingFragment implements ObservableScro
 
 //        EpitechService.getRequest("messages", null, jsonHttpResponseHandler);
         EpitechService.getRequest("infos", null, gsonResponseHandlerInfos);
+        EpitechService.getRequest("messages", null, gsonResponseHandlerMessages);
     }
 }

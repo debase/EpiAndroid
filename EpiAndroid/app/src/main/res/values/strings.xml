@@ -56,6 +56,7 @@
     <string name="current_credit">Crédit :</string>
     <string name="object_credit">Objectif :</string>
     <string name="try_again">try again</string>
+
     <string name="enter_token">Enter your token</string>
     <string name="validate">Validate</string>
     <string name="cancel">Cancel</string>
@@ -65,4 +66,11 @@
     <string name="token_error">You can\'t enter your token for this session or your token is invalid</string>
     <string name="token_success">Token validated</string>
     <string name="no_event">No event</string>
+    <string name="search_mark">Recherche une note</string>
+
+    <string name="messages">Derniers Messages</string>
+    <string name="history">Historique</string>
+    <string name="comment">Commentaire :</string>
+    <string name="dismiss">Quitter</string>
+    <string name="rater">Correcteur :</string>
 </resources>

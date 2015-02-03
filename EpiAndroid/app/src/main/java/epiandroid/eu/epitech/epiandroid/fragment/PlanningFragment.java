@@ -1,8 +1,7 @@
 package epiandroid.eu.epitech.epiandroid.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,19 +9,14 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.adapter.PlanningAdapter;
@@ -31,7 +25,7 @@ import epiandroid.eu.epitech.epiandroid.epitech_service.GsonResponseHandler;
 import epiandroid.eu.epitech.epiandroid.model.PlanningItem;
 import epiandroid.eu.epitech.epiandroid.utils.Utils;
 
-public class PlanningFragment extends Fragment implements View.OnClickListener {
+public class PlanningFragment extends LoadingFragment implements View.OnClickListener {
 
     private ListView planningList;
     private TextView dateLabel;
@@ -41,13 +35,19 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
     private Date currentDate = new Date();
     private String[] monthsNb = new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
     private String[] months;
+    private Activity mActivity = null;
 
     private GsonResponseHandler<PlanningItem[]> gsonResponseHandler = new GsonResponseHandler<PlanningItem[]>(PlanningItem[].class) {
         @Override
         public void onSuccess(PlanningItem[] planningItems) {
+            if (mActivity == null)
+                return;
+
             ArrayList<PlanningItem> contentList = new ArrayList<>();
             listAdapter = new PlanningAdapter(getActivity(), R.layout.adapter_planning, contentList);
 
+            showLoading(false, null);
+            showbaseView(true);
             if (planningItems != null) {
                 for (PlanningItem planningItem : planningItems) {
                     if (planningItem.getRegistered() != null && planningItem.getRegistered().equals("registered")) {
@@ -66,10 +66,25 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
         }
 
         @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            super.onFailure(statusCode, headers, throwable, errorResponse);
+        public void onFailure(Throwable throwable, JSONObject errorResponse) {
+            if (mActivity == null)
+                return;
+            showLoading(false, null);
+            showError(true, getResources().getString(R.string.error_fetching_data));
         }
     };
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity = activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivity = null;
+    }
 
     public PlanningFragment() {
         // Required empty public constructor
@@ -91,30 +106,34 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
                 getResources().getString(R.string.october),
                 getResources().getString(R.string.november),
                 getResources().getString(R.string.december)};
-
-        RequestParams params = new RequestParams();
-        String dateStr = dateCal.get(Calendar.YEAR) + "-" + monthsNb[dateCal.get(Calendar.MONTH)] + "-" + dateCal.get(Calendar.DAY_OF_MONTH);
-        params.put("start", dateStr);
-        params.put("end", dateStr);
-        EpitechService.getRequest("planning", params, gsonResponseHandler);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View V = inflater.inflate(R.layout.fragment_planning, container, false);
-        this.planningList = (ListView) V.findViewById(R.id.planningList);
-        this.dateLabel = (TextView) V.findViewById(R.id.planningDate);
-        this.noEventLabel = (TextView) V.findViewById(R.id.planningNoEvent);
+        View v = inflater.inflate(R.layout.fragment_planning, container, false);
+        this.planningList = (ListView) v.findViewById(R.id.planningList);
+        this.dateLabel = (TextView) v.findViewById(R.id.planningDate);
+        this.noEventLabel = (TextView) v.findViewById(R.id.planningNoEvent);
         this.noEventLabel.setVisibility(View.GONE);
-        ImageButton prevBtn = (ImageButton) V.findViewById(R.id.btnPrevDay);
-        ImageButton nextBtn = (ImageButton) V.findViewById(R.id.btnNextDay);
+        ImageButton prevBtn = (ImageButton) v.findViewById(R.id.btnPrevDay);
+        ImageButton nextBtn = (ImageButton) v.findViewById(R.id.btnNextDay);
         prevBtn.setOnClickListener(this);
         nextBtn.setOnClickListener(this);
         dateCal.setTime(currentDate);
         this.dateLabel.setText(dateCal.get(Calendar.DAY_OF_MONTH) + " " + months[dateCal.get(Calendar.MONTH)] + " " + dateCal.get(Calendar.YEAR));
-        return V;
+
+        setLoadingView(planningList, v.findViewById(R.id.layout_spinner_loading), v.findViewById(R.id.layout_spinner_error));
+        v.findViewById(R.id.button_error).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showError(false, null);
+                load();
+            }
+        });
+        load();
+        return v;
     }
 
     @Override
@@ -131,6 +150,13 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
         } else if (v.getId() == R.id.btnPrevDay) {
             dateCal.add(Calendar.DATE, -1);
         }
+        load();
+    }
+
+    @Override
+    public void load() {
+        showbaseView(false);
+        showLoading(true, getResources().getString(R.string.loading_data));
         this.dateLabel.setText(dateCal.get(Calendar.DAY_OF_MONTH) + " " + months[dateCal.get(Calendar.MONTH)] + " " + dateCal.get(Calendar.YEAR));
         RequestParams params = new RequestParams();
         String dateStr = dateCal.get(Calendar.YEAR) + "-" + monthsNb[dateCal.get(Calendar.MONTH)] + "-" + dateCal.get(Calendar.DAY_OF_MONTH);

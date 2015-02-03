@@ -17,20 +17,6 @@ public class InfoModel implements Serializable {
     @SerializedName("history")
     public HistoryItem[] history;
 
-    public class HistoryItem implements Serializable {
-        @SerializedName("title")
-        public String title;
-
-        @SerializedName("content")
-        public String content;
-
-        @SerializedName("date")
-        public String historyDate;
-
-        @SerializedName("user")
-        public UserItem user;
-    }
-
     public class InfoItem implements Serializable {
         @SerializedName("login")
         public String login;

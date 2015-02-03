@@ -55,6 +55,8 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@string/lorem_ipsum"
+                    android:singleLine="true"
+                    android:textSize="13sp"
                     android:textColor="@color/abc_primary_text_material_dark"
                     android:gravity="center_horizontal"
                     android:id="@+id/email_user"/>

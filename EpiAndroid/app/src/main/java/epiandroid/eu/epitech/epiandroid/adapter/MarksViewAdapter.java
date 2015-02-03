@@ -2,6 +2,7 @@ package epiandroid.eu.epitech.epiandroid.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.model.MarksItem;
@@ -22,6 +24,7 @@ public class MarksViewAdapter extends ArrayAdapter<MarksItem> {
     private int resource;
     private Context context;
     private ArrayList<MarksItem> objects;
+    private ArrayList<MarksItem> listCopy;
 
     static class ViewHolder {
         public TextView projectName;
@@ -35,6 +38,7 @@ public class MarksViewAdapter extends ArrayAdapter<MarksItem> {
         this.context = context;
         Collections.reverse(objects);
         this.objects = objects;
+        this.listCopy = new ArrayList<MarksItem>(objects);
     }
 
     @Override
@@ -58,7 +62,22 @@ public class MarksViewAdapter extends ArrayAdapter<MarksItem> {
         MarksItem item = objects.get(position);
         viewHolder.projectName.setText(item.getName());
         viewHolder.mark.setText(item.getMark());
-        viewHolder.rater.setText(item.getRater());
+        viewHolder.rater.setText((item.getRater() == null ? "" : item.getRater() + " - ") + item.date.split(" ")[0]);
         return row;
+    }
+
+    public void filter(String charText) {
+        Log.v("FILTER", "[" + charText + "]");
+        objects.clear();
+        if (charText.length() == 0) {
+            objects.addAll(listCopy);
+        } else {
+            for (MarksItem item : listCopy) {
+                if (item.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    objects.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }
