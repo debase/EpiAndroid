@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.SearchView;
 
 import org.json.JSONObject;
 
@@ -29,15 +32,15 @@ public class MarksFragment extends LoadingFragment {
     private View view;
     private ListView mMarkListView;
     private Activity mActivity = null;
+    private MarksViewAdapter adapter;
 
     private GsonResponseHandler<MarkModel> gsonResponseHandler = new GsonResponseHandler<MarkModel>(MarkModel.class) {
 
         @Override
         public void onSuccess(MarkModel markModel) {
-            MarksViewAdapter adapter = new MarksViewAdapter(getActivity(), R.layout.mark_item, new ArrayList<MarksItem>(Arrays.asList(markModel.getMarksItem())));
+            adapter = new MarksViewAdapter(getActivity(), R.layout.mark_item, new ArrayList<MarksItem>(Arrays.asList(markModel.getMarksItem())));
             ListView listView = (ListView) view.findViewById(R.id.mark_list);
             listView.setAdapter(adapter);
-            setTextListenerFromActionBar(adapter);
             showLoading(false, null);
             showbaseView(true);
         }
@@ -67,8 +70,17 @@ public class MarksFragment extends LoadingFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        filterFeature();
+        setHasOptionsMenu(true);
         EpitechService.getRequest("marks", null, gsonResponseHandler);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_mark, menu);
+        MenuItem menuItem = menu.findItem(R.id.filter);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        setSearchListenerFromActionBar(searchView);
     }
 
     @Override
@@ -77,19 +89,7 @@ public class MarksFragment extends LoadingFragment {
         return view;
     }
 
-    private void filterFeature() {
-        ActionBarActivity activity = (ActionBarActivity) getActivity();
-        ActionBar actionBar = activity.getSupportActionBar();
-
-        actionBar.setCustomView(R.layout.filter_toolbar);
-        actionBar.setTitle(getResources().getString(R.string.marks));
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-    }
-
-    private void setTextListenerFromActionBar(final MarksViewAdapter adapter) {
-        ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
-        final SearchView searchView = (SearchView) actionBar.getCustomView().findViewById(R.id.filter);
-
+    private void setSearchListenerFromActionBar(SearchView searchView) {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -125,8 +125,6 @@ public class MarksFragment extends LoadingFragment {
     public void onDestroyView() {
         super.onDestroyView();
         view = null;
-        ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
-        
     }
 
     @Override
@@ -134,5 +132,10 @@ public class MarksFragment extends LoadingFragment {
         showbaseView(false);
         showLoading(true, getResources().getString(R.string.loading_data));
         EpitechService.getRequest("marks", null, gsonResponseHandler);
+    }
+
+    private void deleteCustomViewFromActionBar() {
+        ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
+        actionBar.setCustomView(null);
     }
 }
