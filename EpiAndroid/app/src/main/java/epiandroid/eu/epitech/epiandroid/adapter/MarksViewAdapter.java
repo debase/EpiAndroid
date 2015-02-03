@@ -61,8 +61,8 @@ public class MarksViewAdapter extends ArrayAdapter<MarksItem> {
 
         MarksItem item = objects.get(position);
         viewHolder.projectName.setText(item.getName());
-        viewHolder.mark.setText("Mark : " + item.getMark());
-        viewHolder.rater.setText(item.getRater());
+        viewHolder.mark.setText(item.getMark());
+        viewHolder.rater.setText((item.getRater() == null ? "" : item.getRater() + " - ") + item.date.split(" ")[0]);
         return row;
     }
 

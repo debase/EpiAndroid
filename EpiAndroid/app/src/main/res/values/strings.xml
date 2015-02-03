@@ -63,4 +63,11 @@
     <string name="error_fetching_data">Impossible de récuperer les données</string>
     <string name="login_error">Can\'t log you in</string>
     <string name="search_mark">Recherche une note</string>
+
+    <string name="messages">Derniers Messages</string>
+    <string name="history">Historique</string>
+    <string name="comment">Commentaire :</string>
+    <string name="dismiss">Quitter</string>
+    <string name="rater">Correcteur :</string>
+>>>>>>> dbfa4c963357d416990b741611e106269bcff0ba
 </resources>
