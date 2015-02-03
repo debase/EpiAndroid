@@ -1,5 +1,7 @@
 package epiandroid.eu.epitech.epiandroid.epitech_service;
 
+import android.util.Log;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -14,11 +16,13 @@ import org.json.JSONObject;
 public class EpitechService {
     private static String mToken = null;
     private static String BASE_URL;
+    private static int TIME_OUT = 5 * 1000;
 
     private static AsyncHttpClient mClient = new AsyncHttpClient();
 
     public static void initialize(String urlApi) {
         BASE_URL = urlApi;
+        mClient.setMaxRetriesAndTimeout(0, TIME_OUT);
     }
 
     public static void authenticate(String login, String password, final JsonHttpResponseHandler responseHandler) {
@@ -30,6 +34,7 @@ public class EpitechService {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     mToken = response.getString("token");
+                    Log.i("Token", "===========================>  " + mToken);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

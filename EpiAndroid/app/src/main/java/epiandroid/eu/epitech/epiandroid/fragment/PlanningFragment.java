@@ -1,8 +1,7 @@
 package epiandroid.eu.epitech.epiandroid.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +9,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -25,9 +20,10 @@ import java.util.Date;
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.adapter.PlanningAdapter;
 import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
+import epiandroid.eu.epitech.epiandroid.epitech_service.GsonResponseHandler;
 import epiandroid.eu.epitech.epiandroid.model.PlanningItem;
 
-public class PlanningFragment extends Fragment implements View.OnClickListener {
+public class PlanningFragment extends LoadingFragment implements View.OnClickListener {
 
     private ListView planningList;
     private TextView dateLabel;
@@ -36,45 +32,54 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
     private Date currentDate = new Date();
     private String[] monthsNb = new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
     private String[] months;
+    private Activity mActivity = null;
 
-    private JsonHttpResponseHandler mEpitechServiceGetResponseHandler = new JsonHttpResponseHandler() {
-
+    private GsonResponseHandler<PlanningItem[]> gsonResponseHandler = new GsonResponseHandler<PlanningItem[]>(PlanningItem[].class) {
         @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-            super.onSuccess(statusCode, headers, response);
-            Log.i("Planning", "=========================> Planning received");
+        public void onSuccess(PlanningItem[] planningItems) {
+            if (mActivity == null)
+                return;
+
             ArrayList<PlanningItem> contentList = new ArrayList<>();
             listAdapter = new PlanningAdapter(getActivity(), R.layout.adapter_planning, contentList);
 
-            for (int i = 0 ; i < response.length() ; i++) {
-                String title = null;
-                String registered = null;
-                String start = null;
-                String end = null;
-                try {
-                    title = response.getJSONObject(i).getString("acti_title");
-                    registered = response.getJSONObject(i).getString("event_registered");
-                    start = response.getJSONObject(i).getString("start");
-                    end = response.getJSONObject(i).getString("end");
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            showLoading(false, null);
+            showbaseView(true);
+            if (planningItems != null) {
+                for (PlanningItem planningItem : planningItems) {
+                    if (planningItem.getRegistered() != null && planningItem.getRegistered().equals("registered")) {
+                        listAdapter.add(planningItem);
+                    }
                 }
-                if (registered != null && registered.equals("registered")) {
-                    PlanningItem planningItem = new PlanningItem();
-                    planningItem.setTitle(title);
-                    planningItem.setSchedule(start, end);
-                    listAdapter.add(planningItem);
+                planningList.setAdapter(listAdapter);
+            } else {
+                if (listAdapter != null) {
+                    listAdapter.clear();
+                    planningList.setAdapter(listAdapter);
                 }
             }
-
-            planningList.setAdapter(listAdapter);
         }
 
         @Override
-        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-            super.onFailure(statusCode, headers, throwable, errorResponse);
+        public void onFailure(Throwable throwable, JSONObject errorResponse) {
+            if (mActivity == null)
+                return;
+            showLoading(false, null);
+            showError(true, getResources().getString(R.string.error_fetching_data));
         }
     };
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity = activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivity = null;
+    }
 
     public PlanningFragment() {
         // Required empty public constructor
@@ -96,28 +101,32 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
                 getResources().getString(R.string.october),
                 getResources().getString(R.string.november),
                 getResources().getString(R.string.december)};
-
-        RequestParams params = new RequestParams();
-        String dateStr = dateCal.get(Calendar.YEAR) + "-" + monthsNb[dateCal.get(Calendar.MONTH)] + "-" + dateCal.get(Calendar.DAY_OF_MONTH);
-        params.put("start", dateStr);
-        params.put("end", dateStr);
-        EpitechService.getRequest("planning", params, mEpitechServiceGetResponseHandler);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View V = inflater.inflate(R.layout.fragment_planning, container, false);
-        this.planningList = (ListView) V.findViewById(R.id.planningList);
-        this.dateLabel = (TextView) V.findViewById(R.id.planningDate);
-        ImageButton prevBtn = (ImageButton) V.findViewById(R.id.btnPrevDay);
-        ImageButton nextBtn = (ImageButton) V.findViewById(R.id.btnNextDay);
+        View v = inflater.inflate(R.layout.fragment_planning, container, false);
+        this.planningList = (ListView) v.findViewById(R.id.planningList);
+        this.dateLabel = (TextView) v.findViewById(R.id.planningDate);
+        ImageButton prevBtn = (ImageButton) v.findViewById(R.id.btnPrevDay);
+        ImageButton nextBtn = (ImageButton) v.findViewById(R.id.btnNextDay);
         prevBtn.setOnClickListener(this);
         nextBtn.setOnClickListener(this);
         dateCal.setTime(currentDate);
         this.dateLabel.setText(dateCal.get(Calendar.DAY_OF_MONTH) + " " + months[dateCal.get(Calendar.MONTH)] + " " + dateCal.get(Calendar.YEAR));
-        return V;
+
+        setLoadingView(planningList, v.findViewById(R.id.layout_spinner_loading), v.findViewById(R.id.layout_spinner_error));
+        v.findViewById(R.id.button_error).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showError(false, null);
+                load();
+            }
+        });
+        load();
+        return v;
     }
 
     @Override
@@ -134,6 +143,13 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
         } else if (v.getId() == R.id.btnPrevDay) {
             dateCal.add(Calendar.DATE, -1);
         }
+        load();
+    }
+
+    @Override
+    public void load() {
+        showbaseView(false);
+        showLoading(true, getResources().getString(R.string.loading_data));
         this.dateLabel.setText(dateCal.get(Calendar.DAY_OF_MONTH) + " " + months[dateCal.get(Calendar.MONTH)] + " " + dateCal.get(Calendar.YEAR));
         RequestParams params = new RequestParams();
         String dateStr = dateCal.get(Calendar.YEAR) + "-" + monthsNb[dateCal.get(Calendar.MONTH)] + "-" + dateCal.get(Calendar.DAY_OF_MONTH);
@@ -143,6 +159,6 @@ public class PlanningFragment extends Fragment implements View.OnClickListener {
             listAdapter.clear();
             planningList.setAdapter(listAdapter);
         }
-        EpitechService.getRequest("planning", params, mEpitechServiceGetResponseHandler);
+        EpitechService.getRequest("planning", params, gsonResponseHandler);
     }
 }

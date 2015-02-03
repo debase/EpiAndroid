@@ -28,6 +28,13 @@ public abstract class GsonResponseHandler<Model> extends JsonHttpResponseHandler
         onSuccess(getModelFromJson(response.toString()));
     }
 
+    @Override
+    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+        super.onFailure(statusCode, headers, throwable, errorResponse);
+
+        onFailure(throwable, errorResponse);
+    }
+
     public GsonResponseHandler(Class<Model> type) {
         this.type = type;
     }
@@ -35,8 +42,13 @@ public abstract class GsonResponseHandler<Model> extends JsonHttpResponseHandler
     private Model getModelFromJson(String json) {
         Gson gson = new Gson();
 
-        return gson.fromJson(json, type);
+        try {
+            return gson.fromJson(json, type);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public abstract void onSuccess(Model model);
+    public abstract void onFailure(Throwable throwable, JSONObject errorResponse);
 }

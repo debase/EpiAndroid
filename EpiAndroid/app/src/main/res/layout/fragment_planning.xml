@@ -1,49 +1,70 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="epiandroid.eu.epitech.epiandroid.fragment.PlanningFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="@string/planning_today"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:ems="10"
-        android:id="@+id/planningDate"
-        android:layout_gravity="center_horizontal|top"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageButton
-        style="?android:attr/buttonStyleSmall"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:id="@+id/btnPrevDay"
-        android:layout_gravity="start|top"
-        android:contentDescription="@string/previous"
-        android:scaleType="center"
-        android:background="@drawable/arrow_prev"/>
+        <ImageButton
+            style="?android:attr/buttonStyleSmall"
+            android:layout_marginTop="15dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/btnPrevDay"
+            android:layout_gravity="start|top"
+            android:contentDescription="@string/previous"
+            android:scaleType="center"
+            android:background="@drawable/arrow_prev"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-    <ImageButton
-        style="?android:attr/buttonStyleSmall"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:id="@+id/btnNextDay"
-        android:layout_gravity="end|top"
-        android:background="@drawable/arrow_next"
-        android:contentDescription="@string/next"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/planning_today"
+            android:gravity="center"
+            android:ems="10"
+            android:id="@+id/planningDate"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_toRightOf="@+id/btnPrevDay"
+            android:layout_alignBottom="@+id/btnPrevDay"
+            android:layout_alignTop="@+id/btnPrevDay"
+            android:layout_toLeftOf="@+id/btnNextDay"
+            android:layout_toStartOf="@+id/btnNextDay" />
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="35dp"
-        android:id="@+id/planningList"
-        android:layout_gravity="center" />
-</FrameLayout>
+        <ImageButton
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/btnNextDay"
+            android:background="@drawable/arrow_next"
+            android:contentDescription="@string/next"
+            android:layout_alignTop="@+id/planningDate"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingTop="10dp"
+            android:id="@+id/planningList"
+            android:layout_gravity="center" />
+
+        <include layout="@layout/loading_spinner"/>
+
+    </FrameLayout>
+
+</LinearLayout>

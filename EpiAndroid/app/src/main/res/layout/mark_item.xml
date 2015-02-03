@@ -10,7 +10,8 @@
         android:layout_alignParentTop="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/ic_launcher"
+        android:layout_margin="5dp"/>
 
     <TextView
         android:id="@+id/project_name"
@@ -35,7 +36,7 @@
         android:layout_below="@+id/project_name"
         android:layout_alignLeft="@+id/project_name"
         android:layout_alignStart="@+id/project_name" />
-    
+
     <TextView
         android:id="@+id/rater"
         android:layout_width="wrap_content"
