@@ -19,11 +19,12 @@
         android:text="Project name"
         android:textSize="@dimen/project_title"
         android:textStyle="bold"
-        android:layout_marginLeft="17dp"
-        android:layout_marginStart="17dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/mark_icon"
-        android:layout_toEndOf="@+id/mark_icon" />
+        android:layout_toEndOf="@+id/mark_icon"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/mark"
@@ -41,6 +42,7 @@
         android:layout_height="wrap_content"
         android:text="Project rater"
         android:textSize="@dimen/project_rater"
+        android:textStyle="italic"
         android:layout_below="@+id/mark"
         android:layout_alignLeft="@+id/project_name"
         android:layout_alignStart="@+id/project_name" />

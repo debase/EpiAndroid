@@ -55,4 +55,16 @@
     <string name="current_credit">Crédit :</string>
     <string name="object_credit">Objectif :</string>
     <string name="try_again">try again</string>
+
+    <!-- MarksArrays -->
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
 </resources>

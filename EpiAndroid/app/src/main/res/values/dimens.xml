@@ -12,9 +12,9 @@
 
     
     <!-- dimens for marks view -->
-    <dimen name="project_title">17dp</dimen>
-    <dimen name="project_mark">15dp</dimen>
-    <dimen name="project_rater">13dp</dimen>
+    <dimen name="project_title">15dp</dimen>
+    <dimen name="project_mark">13dp</dimen>
+    <dimen name="project_rater">11dp</dimen>
     
     
 </resources>
