@@ -48,9 +48,14 @@ public class MarksFragment extends LoadingFragment implements AdapterView.OnItem
 
         @Override
         public void onSuccess(MarkModel markModel) {
-            mMarksViewAdapter = new MarksViewAdapter(getActivity(), R.layout.mark_item, new ArrayList<MarksItem>(Arrays.asList(markModel.getMarksItem())));
+            mMarkItemList = new ArrayList<MarksItem>(Arrays.asList(markModel.getMarksItem()));
+            mMarksViewAdapter = new MarksViewAdapter(getActivity(), R.layout.mark_item, mMarkItemList);
             ListView listView = (ListView) view.findViewById(R.id.mark_list);
             listView.setAdapter(mMarksViewAdapter);
+
+            if (mCurrentSearch != null) {
+                mMarksViewAdapter.filter(mCurrentSearch);
+            }
             showLoading(false, null);
             showbaseView(true);
         }
