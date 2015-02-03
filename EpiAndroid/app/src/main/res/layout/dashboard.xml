@@ -16,10 +16,32 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/history_linear_layout">
+            android:orientation="vertical">
 
-            <include layout="@layout/header_dashboard"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/header_dashboard"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/messages"
+                    android:textSize="17sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/messages_linear_layout">
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
     </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>

@@ -1,6 +1,8 @@
 package epiandroid.eu.epitech.epiandroid.fragment;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
@@ -10,14 +12,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import epiandroid.eu.epitech.epiandroid.CircleTransform;
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.activity.HomeActivity;
 import epiandroid.eu.epitech.epiandroid.adapter.MarksViewAdapter;
@@ -25,15 +34,17 @@ import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
 import epiandroid.eu.epitech.epiandroid.epitech_service.GsonResponseHandler;
 import epiandroid.eu.epitech.epiandroid.model.MarkModel;
 import epiandroid.eu.epitech.epiandroid.model.MarksItem;
+import me.drakeet.materialdialog.MaterialDialog;
 
 
-public class MarksFragment extends LoadingFragment {
+public class MarksFragment extends LoadingFragment implements AdapterView.OnItemClickListener {
 
     private View view;
     private ListView mMarkListView;
     private Activity mActivity = null;
     private String mCurrentSearch = null;
     private MarksViewAdapter mMarksViewAdapter = null;
+    private ArrayList<MarksItem> mMarkItemList = null;
 
     private GsonResponseHandler<MarkModel> gsonResponseHandler = new GsonResponseHandler<MarkModel>(MarkModel.class) {
 
@@ -42,12 +53,14 @@ public class MarksFragment extends LoadingFragment {
             if (mActivity == null)
                 return;
 
-            mMarksViewAdapter = new MarksViewAdapter(mActivity, R.layout.mark_item, new ArrayList<MarksItem>(Arrays.asList(markModel.getMarksItem())));
+            mMarkItemList = new ArrayList<>(Arrays.asList(markModel.getMarksItem()));
+            mMarksViewAdapter = new MarksViewAdapter(mActivity, R.layout.mark_item, mMarkItemList);
             ListView listView = (ListView) view.findViewById(R.id.mark_list);
             listView.setAdapter(mMarksViewAdapter);
             if (mCurrentSearch != null) {
                 mMarksViewAdapter.filter(mCurrentSearch);
             }
+
             showLoading(false, null);
             showbaseView(true);
         }
@@ -123,6 +136,7 @@ public class MarksFragment extends LoadingFragment {
         super.onViewCreated(view, savedInstanceState);
 
         mMarkListView = (ListView) view.findViewById(R.id.mark_list);
+        mMarkListView.setOnItemClickListener(this);
         setLoadingView(mMarkListView, view.findViewById(R.id.layout_spinner_loading), view.findViewById(R.id.layout_spinner_error));
         view.findViewById(R.id.button_error).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,5 +159,50 @@ public class MarksFragment extends LoadingFragment {
         showbaseView(false);
         showLoading(true, getResources().getString(R.string.loading_data));
         EpitechService.getRequest("marks", null, gsonResponseHandler);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        MarksItem marksItem = mMarkItemList.get(position);
+        final MaterialDialog materialDialog = new MaterialDialog(mActivity);
+
+        LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View markDetail = inflater.inflate(R.layout.mark_detail, null);
+
+        TextView comment = (TextView) markDetail.findViewById(R.id.comment_text_view);
+        TextView projectName = (TextView) markDetail.findViewById(R.id.project_name);
+        TextView moduleName = (TextView) markDetail.findViewById(R.id.detail_module);
+        TextView projectMark = (TextView) markDetail.findViewById(R.id.project_mark);
+        TextView markRater = (TextView) markDetail.findViewById(R.id.mark_rater);
+        TextView markDate = (TextView) markDetail.findViewById(R.id.mark_date);
+        ImageView raterImage = (ImageView) markDetail.findViewById(R.id.rater_image);
+        Button button = (Button) markDetail.findViewById(R.id.button_detail_mark);
+
+        button.setTextColor(Color.argb(255, 35, 159, 242));
+
+        String urlImage = "https://cdn.local.epitech.eu/userprofil/profilview/" + marksItem.getRater() + ".jpg";
+
+        Picasso.with(mActivity)
+                .load(urlImage)
+                .error(R.drawable.person_image_empty)
+                .transform(new CircleTransform())
+                .into(raterImage);
+
+        moduleName.setText(marksItem.titlemodule);
+        projectName.setText(marksItem.getName());
+        projectMark.setText(marksItem.getMark());
+        comment.setText(marksItem.comment);
+        markRater.setText(marksItem.getRater());
+
+        markDate.setText(marksItem.date.split(" ")[0]);
+
+        materialDialog.setContentView(markDetail);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                materialDialog.dismiss();
+            }
+        });
+        materialDialog.show();
     }
 }

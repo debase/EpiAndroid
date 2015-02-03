@@ -16,6 +16,15 @@ public class MarksItem {
     @SerializedName("correcteur")
     private String rater;
 
+    @SerializedName("titlemodule")
+    public String titlemodule;
+
+    @SerializedName("comment")
+    public String comment;
+
+    @SerializedName("date")
+    public String date;
+
     public MarksItem(String name, String mark) {
         this.name = name;
         this.mark = mark;
