@@ -99,21 +99,6 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
         setContentView(R.layout.home_activity);
 
         setTessData();
-//        TessBaseAPI baseAPI = new TessBaseAPI();
-//        try {
-//            baseAPI.init(DATA_PATH, lang);
-//
-//            Drawable drawable = getResources().getDrawable(R.drawable.texte_sample_ocr);
-//            Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-//            Canvas canvas = new Canvas(bitmap);
-//            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-//            drawable.draw(canvas);
-
-//            baseAPI.setImage(bitmap);
-//            Utils.makeText(this, baseAPI.getUTF8Text());
-//        } catch (IllegalArgumentException e) {
-//            Utils.makeText(this, e.getMessage());
-//        }
 
         initView(savedInstanceState);
         if (toolbar != null) {
@@ -131,8 +116,6 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
                 if (!dir.mkdirs()) {
                     Utils.makeText(this, "ERROR: Creation of directory " + path + " on sdcard failed");
                     return;
-                } else {
-                    Utils.makeText(this, "Created directory " + path + " on sdcard");
                 }
             }
 
@@ -162,7 +145,6 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
                 //gin.close();
                 out.close();
 
-                Utils.makeText(this, "Copied " + lang + " traineddata");
             } catch (IOException e) {
                 Utils.makeText(this, "Was unable to copy " + lang + " traineddata " + e.toString());
             }
