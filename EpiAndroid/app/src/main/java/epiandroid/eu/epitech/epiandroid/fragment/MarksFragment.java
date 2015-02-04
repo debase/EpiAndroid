@@ -37,7 +37,6 @@ import me.drakeet.materialdialog.MaterialDialog;
 
 public class MarksFragment extends LoadingFragment implements AdapterView.OnItemClickListener {
 
-    private View view;
     private ListView mMarkListView;
     private Activity mActivity = null;
     private String mCurrentSearch = null;
@@ -50,8 +49,8 @@ public class MarksFragment extends LoadingFragment implements AdapterView.OnItem
         public void onSuccess(MarkModel markModel) {
             mMarkItemList = new ArrayList<MarksItem>(Arrays.asList(markModel.getMarksItem()));
             mMarksViewAdapter = new MarksViewAdapter(getActivity(), R.layout.mark_item, mMarkItemList);
-            ListView listView = (ListView) view.findViewById(R.id.mark_list);
-            listView.setAdapter(mMarksViewAdapter);
+
+            mMarkListView.setAdapter(mMarksViewAdapter);
 
             if (mCurrentSearch != null) {
                 mMarksViewAdapter.filter(mCurrentSearch);
@@ -139,12 +138,6 @@ public class MarksFragment extends LoadingFragment implements AdapterView.OnItem
             }
         });
         load();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        view = null;
     }
 
     @Override
