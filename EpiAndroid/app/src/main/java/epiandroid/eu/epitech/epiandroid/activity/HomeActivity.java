@@ -2,8 +2,10 @@ package epiandroid.eu.epitech.epiandroid.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -11,7 +13,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +25,11 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +44,7 @@ import epiandroid.eu.epitech.epiandroid.fragment.ModulesFragment;
 import epiandroid.eu.epitech.epiandroid.fragment.PlanningFragment;
 import epiandroid.eu.epitech.epiandroid.model.InfoModel;
 import epiandroid.eu.epitech.epiandroid.preference.UserPreferenceHelper;
+import epiandroid.eu.epitech.epiandroid.utils.Utils;
 
 /**
  * Created by debas on 20/01/15.
@@ -57,6 +64,10 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
     private int tabIndex = 0;
     private InfoModel mInfoModel = null;
     private Fragment currentFragment = null;
+
+    public static final String lang = "fra";
+    public static final String DATA_PATH = Environment
+            .getExternalStorageDirectory().toString() + "/SimpleAndroidOCR/";
 
     private GsonResponseHandler<InfoModel> mInfoItemGsonResponseHandler = new GsonResponseHandler<InfoModel>(InfoModel.class) {
         @Override
@@ -87,11 +98,75 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
 
+        setTessData();
+//        TessBaseAPI baseAPI = new TessBaseAPI();
+//        try {
+//            baseAPI.init(DATA_PATH, lang);
+//
+//            Drawable drawable = getResources().getDrawable(R.drawable.texte_sample_ocr);
+//            Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+//            Canvas canvas = new Canvas(bitmap);
+//            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+//            drawable.draw(canvas);
+
+//            baseAPI.setImage(bitmap);
+//            Utils.makeText(this, baseAPI.getUTF8Text());
+//        } catch (IllegalArgumentException e) {
+//            Utils.makeText(this, e.getMessage());
+//        }
+
         initView(savedInstanceState);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
         }
         initDrawer();
+    }
+
+    private void setTessData() {
+        String[] paths = new String[] { DATA_PATH, DATA_PATH + "tessdata/" };
+
+        for (String path : paths) {
+            File dir = new File(path);
+            if (!dir.exists()) {
+                if (!dir.mkdirs()) {
+                    Utils.makeText(this, "ERROR: Creation of directory " + path + " on sdcard failed");
+                    return;
+                } else {
+                    Utils.makeText(this, "Created directory " + path + " on sdcard");
+                }
+            }
+
+        }
+
+        // lang.traineddata file with the app (in assets folder)
+        // You can get them at:
+        // http://code.google.com/p/tesseract-ocr/downloads/list
+        // This area needs work and optimization
+        if (!(new File(DATA_PATH + "tessdata/" + lang + ".traineddata")).exists()) {
+            try {
+
+                AssetManager assetManager = getAssets();
+                InputStream in = assetManager.open("tessdata/" + lang + ".traineddata");
+                //GZIPInputStream gin = new GZIPInputStream(in);
+                OutputStream out = new FileOutputStream(DATA_PATH
+                        + "tessdata/" + lang + ".traineddata");
+
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                //while ((lenf = gin.read(buff)) > 0) {
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                in.close();
+                //gin.close();
+                out.close();
+
+                Utils.makeText(this, "Copied " + lang + " traineddata");
+            } catch (IOException e) {
+                Utils.makeText(this, "Was unable to copy " + lang + " traineddata " + e.toString());
+            }
+        }
     }
 
     public View builSectionView(int iconRes, int stringRes) {

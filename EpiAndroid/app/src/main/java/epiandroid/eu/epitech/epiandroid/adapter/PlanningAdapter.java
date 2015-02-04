@@ -1,69 +1,30 @@
 package epiandroid.eu.epitech.epiandroid.adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.JsonObject;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import org.apache.http.Header;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import epiandroid.eu.epitech.epiandroid.R;
-
-
-import epiandroid.eu.epitech.epiandroid.epitech_service.EpitechService;
-import epiandroid.eu.epitech.epiandroid.epitech_service.GsonResponseHandler;
 import epiandroid.eu.epitech.epiandroid.model.PlanningItem;
-import epiandroid.eu.epitech.epiandroid.utils.Utils;
 
 /**
  * Created by remihillairet on 28/01/15.
  */
-public class PlanningAdapter extends ArrayAdapter<PlanningItem> implements View.OnClickListener {
+public class PlanningAdapter extends ArrayAdapter<PlanningItem> {
 
     private int resource;
     private PlanningItem planningItem;
+    private View.OnClickListener mTokenBtnListner;
 
-    private JsonHttpResponseHandler requestHandler = new JsonHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-            super.onSuccess(statusCode, headers, response);
-
-            try {
-                String error = response.getString("error");
-                Utils.makeText(getContext(), getContext().getResources().getString(R.string.token_error));
-            } catch (JSONException e) {
-                Utils.makeText(getContext(), getContext().getResources().getString(R.string.token_success));
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-            super.onFailure(statusCode, headers, responseString, throwable);
-            Log.i("Token Validation Error", responseString);
-        }
-    };
-
-    public PlanningAdapter(Context context, int resource, List<PlanningItem> objects) {
+    public PlanningAdapter(Context context, View.OnClickListener tokenListener, int resource, List<PlanningItem> objects) {
         super(context, resource, objects);
+        this.mTokenBtnListner = tokenListener;
         this.resource = resource;
     }
 
@@ -77,6 +38,7 @@ public class PlanningAdapter extends ArrayAdapter<PlanningItem> implements View.
             v = vi.inflate(this.resource, null);
         }
 
+
         PlanningItem planningItem = getItem(position);
 
         if (planningItem != null) {
@@ -84,6 +46,8 @@ public class PlanningAdapter extends ArrayAdapter<PlanningItem> implements View.
             TextView scheduleLabel = (TextView) v.findViewById(R.id.adapterPlanningSchedule);
             TextView roomLabel = (TextView) v.findViewById(R.id.adapterPlanningRoom);
             Button btnToken = (Button) v.findViewById(R.id.btnToken);
+
+            btnToken.setTag(position);
 
             if (titleLabel != null) {
                 titleLabel.setText(planningItem.getTitle());
@@ -100,7 +64,7 @@ public class PlanningAdapter extends ArrayAdapter<PlanningItem> implements View.
             }
 
             if (btnToken != null) {
-                btnToken.setOnClickListener(this);
+                btnToken.setOnClickListener(mTokenBtnListner);
             }
 
             this.planningItem = planningItem;
@@ -109,33 +73,4 @@ public class PlanningAdapter extends ArrayAdapter<PlanningItem> implements View.
         return v;
     }
 
-    @Override
-    public void onClick(View v) {
-        final EditText input = new EditText(getContext());
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        final PlanningItem tokenPlanningItem = this.planningItem;
-        new AlertDialog.Builder(getContext())
-                .setTitle(getContext().getResources().getString(R.string.enter_token))
-                .setView(input)
-                .setPositiveButton(getContext().getResources().getString(R.string.validate), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        String token = input.getText().toString();
-
-                        RequestParams params = new RequestParams();
-                        params.put("scolaryear", tokenPlanningItem.getScolaryear());
-                        params.put("codemodule", tokenPlanningItem.getCodemodule());
-                        params.put("codeinstance", tokenPlanningItem.getCodeinstance());
-                        params.put("codeacti", tokenPlanningItem.getCodeacti());
-                        params.put("codeevent", tokenPlanningItem.getCodeevent());
-                        params.put("tokenvalidationcode", token);
-
-                        EpitechService.postRequest("token", params, requestHandler);
-                    }
-                })
-                .setNegativeButton(getContext().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Do nothing.
-                    }
-                }).show();
-    }
 }

@@ -25,10 +25,9 @@
     <string name="planning_today">Today</string>
     <string name="calendar">Planning</string>
     <string name="logout">Logout</string>
-    <string name="really_logout">Voulez vous vraiment vous déconnecter ?</string>
     <string name="validate_token">Validate token</string>
 
-    <string name="yes">oui</string>
+    <string name="yes">yes</string>
     <string name="no">non</string>
 
     <!-- Months -->
@@ -51,27 +50,34 @@
     <!--Text test-->
     <string name="lorem_ipsum">lorem ipsum doler si amet</string>
     <string name="promo">Promo</string>
-    <string name="semester">Semestre</string>
+    <string name="semester">Semester</string>
     <string name="logtime">NetSoul</string>
     <string name="current_credit">Credits :</string>
+
     <string name="object_credit">Objectif :</string>
     <string name="try_again">try again</string>
 
     <string name="enter_token">Enter your token</string>
     <string name="validate">Validate</string>
     <string name="cancel">Cancel</string>
-    <string name="loading_data">Chargement des données ...</string>
+    <string name="loading_data">Loading data ...</string>
     <string name="error_fetching_data">Impossible de récuperer les données</string>
     <string name="login_error">Can\'t log you in</string>
     <string name="token_error">You can\'t enter your token for this session or your token is invalid</string>
     <string name="token_success">Token validated</string>
     <string name="no_event">No event</string>
-    <string name="search_mark">Recherche une note</string>
 
-    <string name="messages">Derniers Messages</string>
-    <string name="history">Historique</string>
-    <string name="comment">Commentaire :</string>
-    <string name="dismiss">Quitter</string>
-    <string name="rater">Correcteur :</string>
+    <string name="history">History</string>
+    <string name="comment">Comment :</string>
+    <string name="dismiss">Exit</string>
     <string name="subscribed_since">Subscribed since </string>
+    <string name="messages">Last messages</string>
+    <string name="rater">Rater :</string>
+    <string name="really_logout">Do you relly want to log out ?</string>
+    <string name="search_mark">Search a mark</string>
+    <string name="dialog_ocr_title">OCR working</string>
+    <string name="dialog_ocr_message">please wait ...</string>
+    <string name="module_acquired">Acquired</string>
+    <string name="module_fail">Failed</string>
+
 </resources>

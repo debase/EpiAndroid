@@ -32,7 +32,7 @@ public class UserPreferenceHelper {
         editor.putString(USER_LOGIN, login);
         editor.putString(USER_PASSWD, pwd);
         editor.putBoolean(USER_LOGEDIN, true);
-        editor.commit();
+        editor.apply();
     }
 
     public static void logout(Context context) {
@@ -40,6 +40,6 @@ public class UserPreferenceHelper {
         editor.remove(USER_LOGIN);
         editor.remove(USER_PASSWD);
         editor.remove(USER_LOGEDIN);
-        editor.commit();
+        editor.apply();
     }
 }

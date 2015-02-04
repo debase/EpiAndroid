@@ -5,10 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,7 +14,6 @@ import java.util.Date;
 
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.model.ModuleItem;
-import epiandroid.eu.epitech.epiandroid.model.PlanningItem;
 
 /**
  * Created by remihillairet on 03/02/15.
@@ -67,7 +63,14 @@ public class ModuleAdapter extends ArrayAdapter<ModuleItem> {
             }
 
             if (gradeLabel != null) {
-                gradeLabel.setText(moduleItem.getGrade());
+                String grade = moduleItem.getGrade();
+                if (grade.equalsIgnoreCase("acquis")) {
+                    grade = getContext().getResources().getString(R.string.module_acquired);
+                }
+                if (grade.equalsIgnoreCase("echec")) {
+                    grade = getContext().getResources().getString(R.string.module_fail);
+                }
+                gradeLabel.setText(grade);
             }
 
             if (dateLabel != null) {

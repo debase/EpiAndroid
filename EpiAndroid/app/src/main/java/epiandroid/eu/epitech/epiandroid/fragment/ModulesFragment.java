@@ -1,14 +1,12 @@
 package epiandroid.eu.epitech.epiandroid.fragment;
 
-import android.support.v4.app.Fragment;
+import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import org.apache.http.Header;
 import org.json.JSONObject;
 
 import java.util.Arrays;
@@ -22,14 +20,18 @@ import epiandroid.eu.epitech.epiandroid.model.ModuleItem;
 import epiandroid.eu.epitech.epiandroid.model.ModulesModel;
 
 
-public class ModulesFragment extends Fragment {
+public class ModulesFragment extends LoadingFragment {
 
     private ListView modulesList;
     private ModuleAdapter listAdapter;
+    private Activity mActivity;
 
     private GsonResponseHandler<ModulesModel> gsonResponseHandler = new GsonResponseHandler<ModulesModel>(ModulesModel.class) {
         @Override
         public void onSuccess(ModulesModel modulesModel) {
+
+            if(mActivity == null)
+                return;
 
             ModuleItem[] items = modulesModel.getModuleItem();
 
@@ -45,18 +47,31 @@ public class ModulesFragment extends Fragment {
 
             listAdapter = new ModuleAdapter(getActivity(), R.layout.adapter_module, items);
             modulesList.setAdapter(listAdapter);
+            showLoading(false, null);
+            showbaseView(true);
         }
 
         @Override
         public void onFailure(Throwable throwable, JSONObject errorResponse) {
+            if (mActivity == null)
+                return;
 
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-            super.onFailure(statusCode, headers, responseString, throwable);
+            showLoading(false, null);
+            showError(true, getResources().getString(R.string.error_fetching_data));
         }
     };
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity = activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivity = null;
+    }
 
     public ModulesFragment() {
 
@@ -65,8 +80,6 @@ public class ModulesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        EpitechService.getRequest("modules", null, gsonResponseHandler);
     }
 
     @Override
@@ -75,11 +88,29 @@ public class ModulesFragment extends Fragment {
 
         this.modulesList  = (ListView) V.findViewById(R.id.modulesList);
 
+        setLoadingView(modulesList, V.findViewById(R.id.layout_spinner_loading), V.findViewById(R.id.layout_spinner_error));
+
+        V.findViewById(R.id.button_error).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showError(false, null);
+                load();
+            }
+        });
+        load();
+
         return V;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void load() {
+        showbaseView(false);
+        showLoading(true, getResources().getString(R.string.loading_data));
+        EpitechService.getRequest("modules", null, gsonResponseHandler);
     }
 }

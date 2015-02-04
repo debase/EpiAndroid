@@ -21,7 +21,7 @@
     <string name="november">novembre</string>
     <string name="december">décembre</string>
     <string name="calendar">Planning</string>
-    <string name="drawer_close"></string>
+    <string name="drawer_close">fermer</string>
     <string name="marks">Notes</string>
     <string name="validate_token">Valider le token</string>
     <string name="previous">Précédent</string>
@@ -29,10 +29,30 @@
     <string name="enter_token">Entrer votre token</string>
     <string name="validate">Valider</string>
     <string name="cancel">Annuler</string>
+
     <string name="token_error">Vous ne pouvez pas rentrer de token pour cette session ou votre token est invalide</string>
     <string name="token_success">Token validé</string>
     <string name="no_event">Aucun évènement</string>
     <string name="navdrawer_modules">Modules</string>
     <string name="current_credit">Crédits :</string>
     <string name="subscribed_since">Inscrit depuis le </string>
+
+    <string name="comment">Commentaire :</string>
+    <string name="dashboard">Accueil</string>
+    <string name="dismiss">Exit</string>
+    <string name="drawer_open">ouvrir</string>
+    <string name="error_fetching_data">Failed to fecth data</string>
+    <string name="history">Historique</string>
+    <string name="loging_you_in">Connexion en cours </string>
+    <string name="login_error">Impossible de vous connecter</string>
+    <string name="messages">Derniers messages</string>
+    <string name="loading_data">Chargement des données ...</string>
+    <string name="rater">Correcteur :</string>
+    <string name="really_logout">Voulez vous vraiment vous déconnecter ?</string>
+    <string name="search_mark">Rechercher une note</string>
+    <string name="semester">Semestre</string>
+    <string name="try_again">réessayer</string>
+    <string name="yes">oui</string>
+    <string name="module_acquired">Acquis</string>
+    <string name="module_fail">Echec</string>
 </resources>
