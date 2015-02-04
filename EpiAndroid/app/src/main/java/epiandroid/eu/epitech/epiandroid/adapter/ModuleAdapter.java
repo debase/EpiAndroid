@@ -1,6 +1,7 @@
 package epiandroid.eu.epitech.epiandroid.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,10 @@ import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import epiandroid.eu.epitech.epiandroid.R;
 import epiandroid.eu.epitech.epiandroid.model.ModuleItem;
@@ -21,10 +24,14 @@ import epiandroid.eu.epitech.epiandroid.model.ModuleItem;
 public class ModuleAdapter extends ArrayAdapter<ModuleItem> {
 
     private int resource;
+    private ArrayList<ModuleItem> objects;
+    private ArrayList<ModuleItem> listCopy;
 
-    public ModuleAdapter(Context context, int resource, ModuleItem[] objects) {
+    public ModuleAdapter(Context context, int resource, ArrayList<ModuleItem> objects) {
         super(context, resource, objects);
         this.resource = resource;
+        this.objects = objects;
+        this.listCopy = new ArrayList<>(objects);
     }
 
     @Override
@@ -37,7 +44,7 @@ public class ModuleAdapter extends ArrayAdapter<ModuleItem> {
             v = vi.inflate(this.resource, null);
         }
 
-        ModuleItem moduleItem = getItem(position);
+        ModuleItem moduleItem = objects.get(position);
 
         String[] months = new String[] {getContext().getResources().getString(R.string.january),
                 getContext().getResources().getString(R.string.february),
@@ -92,5 +99,20 @@ public class ModuleAdapter extends ArrayAdapter<ModuleItem> {
         }
 
         return v;
+    }
+
+    public void filter(String charText) {
+        Log.v("FILTER", "[" + charText + "]");
+        objects.clear();
+        if (charText.length() == 0) {
+            objects.addAll(listCopy);
+        } else {
+            for (ModuleItem item : listCopy) {
+                if (item.getTitle().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    objects.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

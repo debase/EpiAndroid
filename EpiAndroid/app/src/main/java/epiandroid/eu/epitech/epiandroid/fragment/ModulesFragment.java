@@ -2,13 +2,18 @@ package epiandroid.eu.epitech.epiandroid.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -23,8 +28,9 @@ import epiandroid.eu.epitech.epiandroid.model.ModulesModel;
 public class ModulesFragment extends LoadingFragment {
 
     private ListView modulesList;
-    private ModuleAdapter listAdapter;
+    private ModuleAdapter listAdapter = null;
     private Activity mActivity;
+    private String mCurrentSearch = null;
 
     private GsonResponseHandler<ModulesModel> gsonResponseHandler = new GsonResponseHandler<ModulesModel>(ModulesModel.class) {
         @Override
@@ -34,6 +40,7 @@ public class ModulesFragment extends LoadingFragment {
                 return;
 
             ModuleItem[] items = modulesModel.getModuleItem();
+            ArrayList<ModuleItem> moduleItemsList = new ArrayList<>();
 
             Arrays.sort(items, new Comparator<ModuleItem>() {
                 @Override
@@ -45,8 +52,16 @@ public class ModulesFragment extends LoadingFragment {
                 }
             });
 
-            listAdapter = new ModuleAdapter(getActivity(), R.layout.adapter_module, items);
+            for (ModuleItem m : items) {
+                moduleItemsList.add(m);
+            }
+            listAdapter = new ModuleAdapter(getActivity(), R.layout.adapter_module, moduleItemsList);
             modulesList.setAdapter(listAdapter);
+
+            if (mCurrentSearch != null) {
+                listAdapter.filter(mCurrentSearch);
+            }
+
             showLoading(false, null);
             showbaseView(true);
         }
@@ -80,6 +95,38 @@ public class ModulesFragment extends LoadingFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_mark, menu);
+        MenuItem menuItem = menu.findItem(R.id.filter);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        setSearchListenerFromActionBar(searchView);
+    }
+
+    private void setSearchListenerFromActionBar(SearchView searchView) {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                mCurrentSearch = query;
+                if (listAdapter != null) {
+                    listAdapter.filter(mCurrentSearch);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mCurrentSearch = newText;
+                if (listAdapter != null) {
+                    listAdapter.filter(mCurrentSearch);
+                }
+                return false;
+            }
+        });
     }
 
     @Override

@@ -139,7 +139,8 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
-                        android:gravity="center_horizontal">
+                        android:gravity="right"
+                        android:layout_marginRight="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -147,8 +148,11 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:text="@string/current_credit"
                             android:id="@+id/textView2"
+                            android:textColor="@color/abc_primary_text_material_dark"
                             android:layout_marginRight="5dp"
-                            android:textColor="@color/abc_primary_text_material_dark"/>
+                            android:layout_alignParentTop="true"
+                            android:layout_toLeftOf="@+id/current_credit"
+                            android:layout_toStartOf="@+id/current_credit" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -157,17 +161,18 @@
                             android:textStyle="bold"
                             android:text="120"
                             android:id="@+id/current_credit"
-                            android:layout_centerVertical="true"
-                            android:layout_toRightOf="@+id/textView2"
-                            android:layout_toEndOf="@+id/textView2"
-                            android:textColor="@color/abc_primary_text_material_dark"/>
+                            android:textColor="@color/abc_primary_text_material_dark"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true" />
                     </RelativeLayout>
 
                     <RelativeLayout
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
-                        android:gravity="center_horizontal">
+                        android:gravity="left"
+                        android:layout_marginLeft="10dp">
 
                         <TextView
                             android:layout_width="wrap_content"

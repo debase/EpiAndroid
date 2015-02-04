@@ -86,7 +86,6 @@ public class MarksFragment extends LoadingFragment implements AdapterView.OnItem
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        EpitechService.getRequest("marks", null, gsonResponseHandler);
     }
 
     @Override
@@ -100,9 +99,7 @@ public class MarksFragment extends LoadingFragment implements AdapterView.OnItem
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_marks, container, false);
-        setHasOptionsMenu(true);
-        return view;
+        return inflater.inflate(R.layout.fragment_marks, container, false);
     }
 
     private void setSearchListenerFromActionBar(SearchView searchView) {

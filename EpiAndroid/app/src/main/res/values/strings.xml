@@ -73,7 +73,7 @@
     <string name="subscribed_since">Subscribed since </string>
     <string name="messages">Last messages</string>
     <string name="rater">Rater :</string>
-    <string name="really_logout">Do you relly want to log out ?</string>
+    <string name="really_logout">Do you really want to log out ?</string>
     <string name="search_mark">Search a mark</string>
     <string name="dialog_ocr_title">OCR working</string>
     <string name="dialog_ocr_message">please wait ...</string>
