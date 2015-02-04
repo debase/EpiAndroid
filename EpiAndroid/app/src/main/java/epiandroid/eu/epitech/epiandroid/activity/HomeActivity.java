@@ -124,7 +124,6 @@ public class HomeActivity extends ActionBarActivity implements AdapterView.OnIte
         // lang.traineddata file with the app (in assets folder)
         // You can get them at:
         // http://code.google.com/p/tesseract-ocr/downloads/list
-        // This area needs work and optimization
         if (!(new File(DATA_PATH + "tessdata/" + lang + ".traineddata")).exists()) {
             try {
 
