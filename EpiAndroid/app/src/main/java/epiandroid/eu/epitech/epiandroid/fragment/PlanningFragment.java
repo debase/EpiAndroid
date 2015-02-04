@@ -298,7 +298,6 @@ public class PlanningFragment extends LoadingFragment implements View.OnClickLis
                 protected void onPostExecute(String result) {
                     result = result.replaceAll("\\D+","");
                     input.setText(result);
-                    Utils.makeText(mActivity, "result : " + result);
                     progress.dismiss();
                 }
             }.execute(mBaseApi);
