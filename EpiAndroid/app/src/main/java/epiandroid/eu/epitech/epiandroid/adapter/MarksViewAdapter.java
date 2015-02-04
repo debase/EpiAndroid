@@ -2,7 +2,6 @@ package epiandroid.eu.epitech.epiandroid.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +66,6 @@ public class MarksViewAdapter extends ArrayAdapter<MarksItem> {
     }
 
     public void filter(String charText) {
-        Log.v("FILTER", "[" + charText + "]");
         objects.clear();
         if (charText.length() == 0) {
             objects.addAll(listCopy);
