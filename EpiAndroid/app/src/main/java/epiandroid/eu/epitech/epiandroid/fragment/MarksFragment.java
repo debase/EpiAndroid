@@ -49,7 +49,7 @@ public class MarksFragment extends LoadingFragment implements AdapterView.OnItem
         public void onSuccess(MarkModel markModel) {
             if (mActivity == null)
                 return;
-            
+
             mMarkItemList = new ArrayList<MarksItem>(Arrays.asList(markModel.getMarksItem()));
             mMarksViewAdapter = new MarksViewAdapter(getActivity(), R.layout.mark_item, mMarkItemList);
 

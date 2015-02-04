@@ -210,7 +210,6 @@ public class PlanningFragment extends LoadingFragment implements View.OnClickLis
                 load();
                 break;
             case R.id.btnToken :
-                Utils.makeText(mActivity, "position : " + v.getTag());
                 validateToken(v);
                 break;
         }
