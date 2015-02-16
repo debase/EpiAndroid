@@ -23,7 +23,7 @@ You can search a specific module.
 ![Alt text](./screenshots/module_searching_view.png?raw=true "Module search")
 
 You can see your planning for each day !                                             
-[Alt text](./screenshots/planning.png?raw=true "Planning view")
+[Alt text](./screenshots/module_searching_view.png?raw=true "Planning view")
 
 You can validate your token manually or with the OCR option, take a picture of your token and this is it !
 [Alt text](./screenshots/validate_token.png?raw=true "Token")
